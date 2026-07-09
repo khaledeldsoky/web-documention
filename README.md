@@ -1,32 +1,28 @@
-# Skills — Technical Documentation Hub
+# skils — Technical Documentation Hub
 
-Bilingual (English/Arabic) technical documentation site built with Next.js 16, Tailwind CSS v4, and the claude-theme design system. Features dark/light mode, RTL support, collapsible sidebar navigation, and interactive code blocks.
+Bilingual (English/Arabic) technical documentation site built with Next.js 16, Tailwind CSS v4, and the claude-theme design system. Features dark/light mode, RTL layout (Arabic default), collapsible sidebar, and syntax-highlighted code blocks.
 
 ## Quick Start
 
 ```bash
-docker compose up dev
+npm run dev
 ```
 
-Open [http://localhost:3001](http://localhost:3001) — hot reload enabled.
-
-## Production
-
-```bash
-docker compose up prod --build -d
-```
-
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) — hot reload with Turbopack.
 
 ## Available Courses
 
-| Slug | Title | Language |
-|------|-------|----------|
-| `openshift-upi-v414` | OpenShift 4.14 UPI on vSphere | en |
+| Slug | Title | Sections | Language |
+|------|-------|----------|----------|
+| `openshift-upi-v414` | OpenShift 4.14 UPI on vSphere | 12 | en |
+
+### Course: OpenShift 4.14 UPI on vSphere
+
+User-provisioned infrastructure guide covering HAProxy, NFS storage, RHCOS templates, ignition injection via pyVmomi, cluster install, post-install, cleanup, and verification tests. All configurable values (IPs, credentials, paths) use a live variable system — edit once, reflected everywhere.
 
 ## Adding a Course
 
-1. Create a component in `src/content/<name>.tsx` exporting the content and sidebar config
+1. Create a component in `src/content/<name>.tsx` — export content + `sidebarGroups`
 2. Register it in `src/content/index.ts` under the `courses` record
 3. Add translation entries in `messages/en.json` and `messages/ar.json` under `courses.<slug>`
 
@@ -36,8 +32,9 @@ Open [http://localhost:3000](http://localhost:3000).
 - **Styling:** Tailwind CSS v4 + CSS custom properties (claude-theme)
 - **i18n:** next-intl v4 (locales: `en`, `ar`; default: `ar`)
 - **Theming:** next-themes (dark/light, persisted to `localStorage`)
+- **Syntax highlighting:** shiki (github-dark / github-light)
 - **Fonts:** JetBrains Mono (code), Noto Naskh/Sans Arabic (Arabic)
-- **Runtime:** Node.js 20
+- **Runtime:** Node.js 20+
 
 ## Project Structure
 
@@ -45,23 +42,37 @@ Open [http://localhost:3000](http://localhost:3000).
 src/
   app/[locale]/          — App Router pages (landing, courses)
   components/
-    docs/                — Cover, Section, CodeBlock, Callout, etc.
+    docs/                — Cover, Section, CodeBlock, Callout, VerifyBlock,
+                           InfoTable, VariablesTable, Var, StepList, Chip
     layout/              — Topbar, Sidebar, MobileDrawer, DocsPageLayout
   content/               — Course content components + registry
     index.ts             — Course registry (getCourse, getAllCourseSlugs)
-    openshift.tsx        — OpenShift 4.14 UPI course
+    openshift.tsx        — OpenShift 4.14 UPI course (~1130 lines)
+  app/globals.css        — All styles, CSS vars, RTL rules
   i18n/                  — next-intl routing + request config
 messages/                — Translation JSON files (en, ar)
 ```
 
-## Docker
+## Scripts
 
-| Service | Port | Description |
-|---------|------|-------------|
-| `dev` | 3001 | Hot-reload dev server with Turbopack |
-| `prod` | 3000 | Production server (standalone output) |
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server (Turbopack) |
+| `npm run build` | Production build |
+| `npm start` | Start production server |
+| `npm run lint` | Run ESLint |
 
-Images are built from `node:20-alpine`. The production image uses Next.js's `output: "standalone"` for a minimal runtime footprint (~150 MB).
+## Variable System
+
+Course content uses `<Var name="VARIABLE_NAME" />` placeholders that render as amber-highlighted, editable fields. Values are stored in `localStorage` (key: `varStore`) and reactive — change once, all occurrences update instantly. The VariablesTable at the start of each course lists every variable with its category, placeholder, and example value.
+
+## Conventions
+
+- Default locale is `ar` (Arabic), RTL-first design
+- Code blocks use labeled language tags (`bash`, `yaml`, `ini`)
+- SSH + remote command sequences are contained in a single `CodeBlock` (SSH as first line)
+- Each section/subsection is prefixed with a JSX comment for navigation in source
+- Blank lines separate adjacent JSX block elements for readability
 
 ## Environment Variables
 
@@ -71,4 +82,3 @@ Images are built from `node:20-alpine`. The production image uses Next.js's `out
 | `PORT` | `3000` | no | Server port |
 | `HOSTNAME` | `0.0.0.0` | no | Server bind address |
 | `NEXT_TELEMETRY_DISABLED` | `1` | no | Disable Next.js telemetry |
-# web-documention

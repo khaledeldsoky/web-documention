@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "search": "Search courses...",
+    "back": "Back",
+    "footer": "Technical Guides — Documentation Hub"
+  },
+  "topbar": {
+    "language": "العربية",
+    "theme": "Theme",
+    "back": "Back"
+  },
+  "cover": {
+    "title": "Complete <hl>Technical</hl> Guides",
+    "sub": "Practical, step-by-step guides — from CI/CD fundamentals to server administration"
+  },
+  "courses": {
+    "github-actions": {
+      "title": "GitHub Actions",
+      "desc": "Complete guide from scratch — Workflows, Jobs, Steps, Matrix, Needs, from setup to production deployment.",
+      "tag": "CI/CD",
+      "chapters": "11 chapters",
+      "level": "comprehensive"
+    },
+    "linux-admin": {
+      "title": "Linux Administration",
+      "desc": "From terminal commands to server management — everything a sysadmin needs in one guide.",
+      "tag": "Linux",
+      "chapters": "22+ chapters",
+      "level": "comprehensive"
+    },
+    "openshift-upi-v414": {
+      "title": "OpenShift 4.14 UPI on vSphere",
+      "desc": "Deploy OpenShift 4.14 on vSphere using User Provisioned Infrastructure — HAProxy, NFS, govc, from VMs to production cluster.",
+      "tag": "OpenShift",
+      "chapters": "12 chapters",
+      "level": "comprehensive"
+    },
+    "bash-basics": {
+      "title": "Bash Scripting Basics",
+      "desc": "Quick reference for the most common Bash scripting patterns — conditionals, loops, and functions.",
+      "tag": "Scripting",
+      "chapters": "11 chapters",
+      "level": "beginner"
+    }
+  }
+}

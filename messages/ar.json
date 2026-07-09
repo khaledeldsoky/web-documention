@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "courses": "الكورسات",
+    "search": "ابحث في الكورسات ...",
+    "back": "رجوع",
+    "footer": "دليل التقنية — Documentation Hub"
+  },
+  "topbar": {
+    "language": "English",
+    "theme": "المظهر",
+    "back": "رجوع"
+  },
+  "cover": {
+    "title": "دليل التقنية <hl>الشامل</hl>",
+    "sub": "شرح عملي مبسط لكل ما تحتاجه — من أساسيات CI/CD إلى إدارة الخوادم"
+  },
+  "courses": {
+    "github-actions": {
+      "title": "GitHub Actions",
+      "desc": "دليل متكامل من الصفر — Workflow, Jobs, Steps, Matrix, Needs، من البداية إلى النشر الفعلي.",
+      "tag": "CI/CD",
+      "chapters": "11 فصل",
+      "level": "شامل"
+    },
+    "linux-admin": {
+      "title": "إدارة لينكس",
+      "desc": "من أوامر الطرفية إلى إدارة الخوادم — كل ما يحتاجه مسؤول النظام في دليل واحد.",
+      "tag": "Linux",
+      "chapters": "22+ فصل",
+      "level": "شامل"
+    },
+    "openshift-upi-v414": {
+      "title": "OpenShift 4.14 UPI على vSphere",
+      "desc": "انشر OpenShift 4.14 على vSphere باستخدام UPI — HAProxy, NFS, govc، من الأجهزة الافتراضية إلى الكلاستر الإنتاجي.",
+      "tag": "OpenShift",
+      "chapters": "12 فصل",
+      "level": "شامل"
+    },
+    "bash-basics": {
+      "title": "أساسيات Bash",
+      "desc": "مرجع سريع لأشهر أنماط Bash scripting — الشروط، الحلقات، والدوال.",
+      "tag": "Scripting",
+      "chapters": "11 فصل",
+      "level": "مبتدئ"
+    }
+  }
+}
