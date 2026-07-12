@@ -24,7 +24,7 @@
   --text-dim: #8899b5;
   --text-muted: #4d607a;
   --code-bg: #080b0f;
-  --code-border: #1a2233;
+  --code-border: #222c40;
 
   --sidebar-width: 280px;
   --sidebar-collapsed: 48px;
@@ -580,7 +580,7 @@ body {
 .code-block {
   background: var(--code-bg);
   border: 1px solid var(--code-border);
-  border-radius: 9px;
+  border-radius: 8px;
   margin: 10px 0 20px;
   overflow: hidden;
 }
@@ -1161,6 +1161,66 @@ hr.divider {
   .benefit-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── COLLAPSIBLE ── */
+.collapsible {
+  margin: 16px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.collapsible-summary {
+  cursor: pointer;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  background: var(--surface);
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.collapsible-summary::-webkit-details-marker {
+  display: none;
+}
+
+.collapsible-summary::before {
+  content: "▶";
+  display: inline-block;
+  transition: transform 0.2s;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+details[open] .collapsible-summary::before {
+  transform: rotate(90deg);
+}
+
+.collapsible-summary:hover {
+  background: var(--surface2);
+}
+
+.collapsible-body {
+  padding: 0 16px 16px;
+  background: var(--bg);
+}
+
+.collapsible-body > :first-child {
+  margin-top: 0;
+}
+
+.collapsible-body > :last-child {
+  margin-bottom: 0;
+}
+
+.collapsible-body .code-block {
+  border: none;
+  margin-top: 0;
 }
 
 /* ── PRINT ── */

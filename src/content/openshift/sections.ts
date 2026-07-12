@@ -1,0 +1,12 @@
+export { Section1 } from "./01-variables";
+export { Section2 } from "./02-prerequisites";
+export { Section3 } from "./03-wsl-setup";
+export { Section4 } from "./04-vsphere";
+export { Section5 } from "./05-haproxy-nfs";
+export { Section6 } from "./06-ocp-vms";
+export { Section7 } from "./07-ignition";
+export { Section8 } from "./08-cluster-install";
+export { Section9 } from "./09-postinstall";
+export { Section10 } from "./10-cleanup";
+export { Section11 } from "./11-troubleshooting";
+export { Section12 } from "./12-tests";

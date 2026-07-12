@@ -5,6 +5,10 @@ Bilingual (English/Arabic) technical documentation site built with Next.js 16, T
 ## Quick Start
 
 ```bash
+# Using Docker (recommended)
+docker compose up dev
+
+# Or without Docker (requires Node.js 20+)
 npm run dev
 ```
 
@@ -34,7 +38,7 @@ User-provisioned infrastructure guide covering HAProxy, NFS storage, RHCOS templ
 - **Theming:** next-themes (dark/light, persisted to `localStorage`)
 - **Syntax highlighting:** shiki (github-dark / github-light)
 - **Fonts:** JetBrains Mono (code), Noto Naskh/Sans Arabic (Arabic)
-- **Runtime:** Node.js 20+
+- **Runtime:** Docker + Node.js 20
 
 ## Project Structure
 
@@ -47,20 +51,23 @@ src/
     layout/              — Topbar, Sidebar, MobileDrawer, DocsPageLayout
   content/               — Course content components + registry
     index.ts             — Course registry (getCourse, getAllCourseSlugs)
-    openshift.tsx        — OpenShift 4.14 UPI course (~1130 lines)
+    openshift.tsx        — OpenShift 4.14 UPI course composer (~40 lines)
+    openshift/           — 12 per-section files + barrel sections.ts
   app/globals.css        — All styles, CSS vars, RTL rules
   i18n/                  — next-intl routing + request config
 messages/                — Translation JSON files (en, ar)
+ARCHITECTURE.md          — AI agent reference (components, patterns, variables)
 ```
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start dev server (Turbopack) |
-| `npm run build` | Production build |
-| `npm start` | Start production server |
-| `npm run lint` | Run ESLint |
+| Task | Docker | npm |
+|------|--------|-----|
+| Dev server | `docker compose up dev` | `npm run dev` |
+| Production build | `docker compose build prod` | `npm run build` |
+| Production server | `docker compose up -d prod` | `npm start` |
+| Production build and server | `docker compose up -d prod --build` | `npm start` |
+| Lint | `docker compose exec dev npm run lint` | `npm run lint` |
 
 ## Variable System
 
@@ -82,3 +89,5 @@ Course content uses `<Var name="VARIABLE_NAME" />` placeholders that render as a
 | `PORT` | `3000` | no | Server port |
 | `HOSTNAME` | `0.0.0.0` | no | Server bind address |
 | `NEXT_TELEMETRY_DISABLED` | `1` | no | Disable Next.js telemetry |
+
+> Set these in `docker-compose.yml` under `environment`, or create a `.env` file in the project root.

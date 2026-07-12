@@ -14,6 +14,7 @@ export async function highlight(code: string, lang: string) {
       "powershell",
       "ini",
       "toml",
+      "python",
     ],
     themes: ["github-dark", "github-light"],
   });
