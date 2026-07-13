@@ -4,17 +4,18 @@ import { useState, useEffect } from "react";
 import { getStore, subscribe, loadFromStorage } from "@/lib/varStore";
 
 type Props = {
+  course: string;
   name: string;
 };
 
-export default function Var({ name }: Props) {
-  const [vars, setVars] = useState(getStore);
+export default function Var({ course, name }: Props) {
+  const [vars, setVars] = useState(() => getStore(course));
 
   useEffect(() => {
-    loadFromStorage();
-    setVars({ ...getStore() });
-    return subscribe(() => setVars({ ...getStore() }));
-  }, []);
+    loadFromStorage(course);
+    setVars({ ...getStore(course) });
+    return subscribe(() => setVars({ ...getStore(course) }));
+  }, [course]);
 
   const value = vars[name];
 

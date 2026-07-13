@@ -4,7 +4,11 @@ Quick-reference for AI agents. Read this before editing any files.
 
 ## Project Purpose
 
-Bilingual (en/ar) Next.js 16 doc website. Currently one course: `openshift-upi-v414` — an OpenShift 4.14 UPI on vSphere installation guide with 12 sections.
+Bilingual (en/ar) Next.js 16 doc website. Four courses:
+- `openshift-upi-v414` — OpenShift 4.14 UPI on vSphere installation guide (12 sections)
+- `linux-admin` — Linux system administration (23 sections, 0-22)
+- `k8s-airgap-baremetal` — Kubernetes air-gap bare-metal cluster (19 sections, 0-18)
+- `k8s-airgap-vsphere` — Kubernetes air-gap vSphere with govc VM creation (20 sections, 0-19)
 
 ## File Map
 
@@ -27,10 +31,81 @@ src/
       10-cleanup.tsx          — Cleanup procedures
       11-troubleshooting.tsx  — Troubleshooting guide
       12-tests.tsx            — Verification tests
+    linux.tsx                 — Linux course module (Cover + sidebarGroups + all Section imports)
+    linux/
+      sections.ts             — Barrel re-exporting all 23 section files (Section0-Section22)
+      00-boot-process.tsx     — Boot process (BIOS vs UEFI)
+      01-filesystem.tsx       — Filesystem hierarchy (/proc, /sys, tmpfiles.d)
+      02-navigation.tsx       — Navigating the filesystem (cd, ls, find, tree)
+      03-links.tsx            — Hard & symbolic links
+      04-ssh.tsx              — SSH remote access
+      05-users.tsx            — Users & groups
+      06-permissions.tsx      — File permissions (chmod, chown, ACL)
+      07-packages.tsx         — Package management (DNF, RPM, APT)
+      08-selinux.tsx          — SELinux (modes, contexts, booleans)
+      09-kernel.tsx           — Kernel & modules (lsmod, sysctl)
+      10-logging.tsx          — Logging & log management (journalctl, rsyslog)
+      11-firewall-ports.tsx   — Firewall & ports (firewall-cmd, ss)
+      12-networking.tsx       — Networking configuration (nmcli, ip)
+      13-storage.tsx          — Storage — disks, LVM & filesystems
+      14-systemd.tsx          — Systemd deep dive (units, targets, drop-ins)
+      15-cron.tsx             — Cron & at (scheduled tasks)
+      16-performance.tsx      — Performance diagnostics (top, vmstat, iostat)
+      17-processes.tsx        — Process management (ps, kill, nice)
+      18-troubleshooting.tsx  — Troubleshooting methodology
+      19-rescue-grub.tsx      — Rescue mode & GRUB recovery
+      20-commands.tsx         — Essential commands (awk, grep, find, scp)
+      21-nginx-apache.tsx     — Nginx vs Apache comparison
+      22-http-errors.tsx      — HTTP 400 vs 500 error codes
+    k8s-airgap-baremetal.tsx  — Course module (Cover + sidebarGroups 6 groups)
+    k8s-airgap-baremetal/
+      sections.ts             — Barrel re-exporting all 19 section files
+      00-variables.tsx        — VariablesTable with 30+ vars
+      01-overview.tsx         — Architecture overview + IP table
+      02-static-ip.tsx        — Static IP configuration
+      03-offline-bundle.tsx   — Build offline staging bundle (Docker, RPMs, images, helm)
+      04-master1-infra.tsx    — Master1 infra setup (registry, dnsmasq)
+      05-containerd.tsx       — Containerd installation
+      06-kubeadm.tsx          — kubeadm/kubelet/kubectl install
+      07-kube-vip.tsx         — kube-vip static pod
+      08-init-cluster.tsx     — kubeadm init
+      09-join-workers.tsx     — Join worker nodes
+      10-calico.tsx           — Calico CNI (or flannel)
+      11-metallb.tsx          — MetalLB install + IP pool
+      12-nginx-ingress.tsx    — NGINX Ingress Controller (Helm)
+      13-local-path.tsx       — local-path-provisioner
+      14-verify-cluster.tsx   — Cluster verification
+      15-join-masters.tsx     — Join additional masters
+      16-verification.tsx     — Final verification tests
+      17-storage-class.tsx    — Default StorageClass
+      18-troubleshooting.tsx  — Common issues + fixes
+    k8s-airgap-vsphere.tsx    — Course module (Cover + sidebarGroups 7 groups)
+    k8s-airgap-vsphere/
+      sections.ts             — Barrel re-exporting all 20 section files
+      00-variables.tsx        — VariablesTable with 38+ vars (govc + versions)
+      01-overview.tsx         — Architecture overview
+      02-create-vms.tsx       — Create VMs with govc (5 subsections)
+      03-verify-network.tsx   — Verify network connectivity
+      04-offline-bundle.tsx   — Build offline staging bundle
+      05-master1-infra.tsx    — Master1 infra setup
+      06-containerd.tsx       — Containerd installation
+      07-kubeadm.tsx          — kubeadm/kubelet/kubectl install
+      08-kube-vip.tsx         — kube-vip static pod
+      09-init-cluster.tsx     — kubeadm init
+      10-join-workers.tsx     — Join worker nodes
+      11-flannel.tsx          — Flannel CNI
+      12-metallb.tsx          — MetalLB install
+      13-nginx-ingress.tsx    — NGINX Ingress Controller
+      14-local-path.tsx       — local-path-provisioner
+      15-verify-cluster.tsx   — Cluster verification
+      16-join-masters.tsx     — Join additional masters
+      17-verification.tsx     — Final verification tests
+      18-storage-class.tsx    — Default StorageClass
+      19-troubleshooting.tsx  — Common issues + fixes
     scripts/
       setup-env.sh            — Downloadable env template
   components/
-    docs/                     — 16 doc components (see inventory below)
+    docs/                     — 17 doc components (see inventory below)
     layout/                   — Topbar, Sidebar, MobileDrawer, DocsPageLayout
   app/
     [locale]/                 — App Router pages (landing, courses)
@@ -69,15 +144,15 @@ messages/
 
 | Component | Props | Purpose |
 |-----------|-------|---------|
-| `Var` | `name` | Inline reactive variable display — shows value or `<NAME>` placeholder |
-| `VariablesTable` | `columns`, `rows` | Interactive table with editable input fields bound to varStore |
-| `VarReplace` | (none) | Invisible — scans DOM for `[data-var]` elements and reactively updates from varStore |
+| `Var` | `course`, `name` | Inline reactive variable display — shows value or `<NAME>` placeholder. `course` namespaces the variable store. |
+| `VariablesTable` | `course`, `columns`, `rows` | Interactive table with editable input fields bound to varStore. `course` namespaces the variable store. |
+| `VarReplace` | `course` | Invisible — scans DOM for `[data-var]` elements and reactively updates from varStore. `course` namespaces the variable store. |
 
 ### Tables & Lists
 
 | Component | Props | Purpose |
 |-----------|-------|---------|
-| `InfoTable` | `columns: {header, key}[]`, `rows` | Static HTML table |
+| `InfoTable` | `columns: {header, key}[]`, `rows` | Static HTML table. Cell values support HTML (`<code>`, `<strong>`) via `dangerouslySetInnerHTML` |
 | `StepList` | `steps: {title, desc}[]` | Ordered list of titled steps |
 | `BenefitGrid` | `cards: {icon, title, body, danger?}[]` | Grid of icon+title+body cards |
 
@@ -91,12 +166,14 @@ messages/
 
 ## Variable System
 
-Variables use `<Var name="VARIABLE_NAME" />` in prose and `<VARIABLE_NAME>` in CodeBlock children.
+Variables use `<Var name="VARIABLE_NAME" course="COURSE" />` in prose and `<VARIABLE_NAME>` in CodeBlock children.
 
-- **Storage:** `localStorage` key `varStore` (JSON object)
+- **Storage:** `localStorage` key `{course}-vars` (JSON object, namespaced per course)
 - **Reactivity:** `VarReplace` component uses `MutationObserver` + store subscription to update all placeholders
 - **Editing:** `VariablesTable` renders `<input>` fields bound to varStore
 - **CodeBlock behavior:** `<VAR>` patterns are extracted before Shiki highlighting, restored as `<span class="placeholder" data-var="...">` elements
+- **Course prop:** All variable components (`Var`, `VariablesTable`, `VarReplace`) accept a `course` prop for namespacing
+- **3-case rules:** See `docs/VARIABLE-RULES.md` for the complete specification (Default / Cleared / Custom)
 
 ### Variable definitions (from Section 1)
 
@@ -173,7 +250,8 @@ Link between sections using anchor IDs:
 Requires HAProxy and NFS from <a href="#nfs-haproxy">Section 5</a> to be running.
 ```
 
-Section IDs: `variables`, `prerequisites`, `wsl-setup`, `vsphere`, `nfs-haproxy`, `ocp-vms`, `ignition`, `cluster-install`, `postinstall`, `cleanup`, `troubleshooting`, `tests`.
+Section IDs — OpenShift: `variables`, `prerequisites`, `wsl-setup`, `vsphere`, `nfs-haproxy`, `ocp-vms`, `ignition`, `cluster-install`, `postinstall`, `cleanup`, `troubleshooting`, `tests`.
+Section IDs — Linux: `boot-process`, `filesystem`, `navigation`, `links`, `ssh`, `users`, `permissions`, `packages`, `selinux`, `kernel`, `logging`, `firewall-ports`, `networking`, `storage`, `systemd`, `cron`, `performance`, `processes`, `troubleshooting`, `rescue-grub`, `commands`, `nginx-apache`, `http-errors`.
 
 ### JSX Comments
 
@@ -191,11 +269,12 @@ Add empty lines between adjacent JSX block elements (`</CodeBlock>`, `</VerifyBl
 ## Conventions
 
 - Default locale is `ar` (Arabic), RTL-first design
+- Sidebar section labels use dash format: `"N - Title"` (not dot)
 - Code blocks use labeled language tags (`bash`, `yaml`, `ini`, `python`)
 - Variable placeholders in code: `<VARIABLE_NAME>` angle-bracket format
 - Variable placeholders in prose: `<Var name="VARIABLE_NAME" />` component
 - Each section file exports a named function: `export function SectionN()`
 - Barrel file `sections.ts` re-exports all sections
-- Course composer `openshift.tsx` imports sections + Cover + sidebarGroups
+- Course composer (`openshift.tsx`, `linux.tsx`) imports sections + Cover + sidebarGroups
 - Do NOT add comments to code blocks unless explicitly asked
 - Do NOT create new files unless explicitly asked

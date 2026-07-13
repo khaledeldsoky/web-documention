@@ -9,18 +9,19 @@ type Column = {
 };
 
 type Props = {
+  course: string;
   columns: Column[];
   rows: Record<string, string>[];
 };
 
-export default function VariablesTable({ columns, rows }: Props) {
-  const [vars, setVars] = useState(getStore);
+export default function VariablesTable({ course, columns, rows }: Props) {
+  const [vars, setVars] = useState(() => getStore(course));
 
   useEffect(() => {
-    loadFromStorage();
-    setVars({ ...getStore() });
-    return subscribe(() => setVars({ ...getStore() }));
-  }, []);
+    loadFromStorage(course);
+    setVars({ ...getStore(course) });
+    return subscribe(() => setVars({ ...getStore(course) }));
+  }, [course]);
 
   const groups: { cat: string; rows: typeof rows }[] = [];
   let currentCat = "";
@@ -63,9 +64,14 @@ export default function VariablesTable({ columns, rows }: Props) {
                         <input
                           className="var-input"
                           type="text"
-                          value={vars[varName] ?? val}
-                          onChange={(e) => setVar(varName, e.target.value)}
+                          value={vars[varName] || val}
+                          onChange={(e) => setVar(course, varName, e.target.value)}
                           placeholder={val}
+                          style={{
+                            color: vars[varName] !== ""
+                              ? "var(--accent3)"
+                              : "color-mix(in srgb, var(--accent3) 40%, transparent)",
+                          }}
                         />
                       </td>
                     );

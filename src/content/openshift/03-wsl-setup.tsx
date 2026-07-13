@@ -17,6 +17,7 @@ export function Section3() {
         <CodeBlock lang="bash" label="WSL">
 {`# Download and extract govc binary
 curl -sL https://github.com/vmware/govmomi/releases/latest/download/govc_$(uname -s)_$(uname -m).tar.gz | tar -C /usr/local/bin -xz govc
+
 # Make it executable and verify version
 chmod +x /usr/local/bin/govc
 govc version`}
@@ -30,13 +31,16 @@ export OCP4_DIR=<OCP4_DIR>
 mkdir -p $OCP4_DIR
 cd $OCP4_DIR
 mkdir -p $OCP4_DIR/{config,rhcos,ignition,scripts}
+
 # Download OpenShift client and installer tarballs
 wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.14.0/openshift-client-linux.tar.gz
 wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.14.0/openshift-install-linux.tar.gz
+
 # Extract into /usr/local/bin
 sudo tar xzf openshift-client-linux.tar.gz -C /usr/local/bin/
 sudo tar xzf openshift-install-linux.tar.gz -C /usr/local/bin/
 sudo chmod +x /usr/local/bin/{oc,kubectl,openshift-install}
+
 # Verify versions
 openshift-install version
 oc version`}
@@ -52,6 +56,7 @@ oc version`}
         <CodeBlock lang="bash" label="WSL">
 {`# Generate an SSH key pair (no passphrase)
 ssh-keygen -t ed25519 -f ~/.ssh/openshift -N "" -C "khaled@ocp4"
+
 # Display the public key for use in install-config.yaml
 cat ~/.ssh/openshift.pub`}
         </CodeBlock>

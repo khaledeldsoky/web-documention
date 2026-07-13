@@ -43,6 +43,20 @@
       "tag": "Scripting",
       "chapters": "11 فصل",
       "level": "مبتدئ"
+    },
+    "k8s-airgap-baremetal": {
+      "title": "كوبيرونيتس HA بدون إنترنت — Baremetal",
+      "desc": "نشر كلاستر كوبيرونيتس HA مكون من 3+3 عقد على بيريمتال معزول — بدون إنترنت، بدون DHCP، بدون DNS.",
+      "tag": "Kubernetes",
+      "chapters": "19 فصل",
+      "level": "شامل"
+    },
+    "k8s-airgap-vsphere": {
+      "title": "كوبيرونيتس HA بدون إنترنت — vSphere",
+      "desc": "نشر كلاستر كوبيرونيتس HA مكون من 3+3 عقد على vSphere معزول — govc، kernel args، بدون إنترنت.",
+      "tag": "Kubernetes",
+      "chapters": "20 فصل",
+      "level": "شامل"
     }
   }
 }

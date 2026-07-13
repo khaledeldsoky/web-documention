@@ -14,6 +14,7 @@ export function Section8() {
         <CodeBlock lang="bash" label="WSL">
 {`# Power on the bootstrap VM
 govc vm.power -on <BOOTSTRAP_VM>
+
 # Wait for bootstrap to complete (10-15 minutes)
 openshift-install wait-for bootstrap-complete \\
   --dir=$OCP4_DIR/config --log-level debug`}
@@ -36,7 +37,7 @@ for i in 0 1 2; do
 done`}
         </CodeBlock>
         <VerifyBlock>
-          <p><code>govc vm.info <Var name="MASTER_PREFIX" />-0</code> shows <code>poweredOn</code> for all 3 masters.</p>
+          <p><code>govc vm.info <Var course="openshift-upi-v414" name="MASTER_PREFIX" />-0</code> shows <code>poweredOn</code> for all 3 masters.</p>
         </VerifyBlock>
       </Subsection>
 
@@ -48,20 +49,24 @@ govc vm.power -on <WORKER_PREFIX>-0
 govc vm.power -on <WORKER_PREFIX>-1`}
         </CodeBlock>
         <VerifyBlock>
-          <p><code>govc vm.info <Var name="WORKER_PREFIX" />-0</code> shows <code>poweredOn</code> for both workers.</p>
+          <p><code>govc vm.info <Var course="openshift-upi-v414" name="WORKER_PREFIX" />-0</code> shows <code>poweredOn</code> for both workers.</p>
         </VerifyBlock>
       </Subsection>
 
       <Subsection title="Approve CSRs">
-        <Prose>SSH into the bootstrap VM and run the auto-approve watcher. Masters and workers send certificate requests that must be approved before they can join the cluster. Keep this session running while nodes join. Re-run when adding workers later.</Prose>
+        <Prose>SSH into the bootstrap VM to approve pending CSRs. Masters and workers send certificate requests that must be approved before they can join the cluster.</Prose>
         <CodeBlock lang="bash" label="WSL — SSH into bootstrap">
 {`ssh -i ~/.ssh/openshift core@<BOOTSTRAP_IP>
-# Auto-approve pending CSRs every 10 seconds (keep this terminal open)
-watch -n 10 'oc get csr -o go-template="{{range .items}}{{if not .status}}{{.metadata.name}} {{end}}{{end}}" | xargs -r oc adm certificate approve'`}
+
+# Approve all pending CSRs
+oc get csr -o go-template="{{range .items}}{{if not .status}}{{.metadata.name}} {{end}}{{end}}" | xargs -r oc adm certificate approve`}
         </CodeBlock>
         <VerifyBlock>
           <p><code>oc get nodes</code> shows masters as <code>Ready</code></p>
         </VerifyBlock>
+        <Callout variant="danger">
+          Run <code>oc get csr -o go-template="..." | xargs -r oc adm certificate approve</code> <strong>only after the cluster install is complete</strong> and when <strong>adding new nodes</strong>. Re-approve CSRs each time a worker joins.
+        </Callout>
       </Subsection>
 
       <Subsection title="Wait for Install Complete">

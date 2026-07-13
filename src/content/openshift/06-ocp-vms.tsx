@@ -22,6 +22,7 @@ govc vm.clone \\
   -ds <DATASTORE> \\
   -on=false \\
   <BOOTSTRAP_VM>
+
 # Resize bootstrap: 16 GB RAM, 4 vCPUs, 120 GB disk
 govc vm.change -vm <BOOTSTRAP_VM> -m 16384 -c 4
 govc vm.disk.change -vm <BOOTSTRAP_VM> -disk.label "Hard disk 1" -size "120G"`}
@@ -109,7 +110,7 @@ done`}
         </CodeBlock>
 
         <VerifyBlock>
-          <p><code>govc vm.info <Var name="BOOTSTRAP_VM" /> | grep afterburn</code> shows the guestinfo key.</p>
+          <p><code>govc vm.info <Var course="openshift-upi-v414" name="BOOTSTRAP_VM" /> | grep afterburn</code> shows the guestinfo key.</p>
         </VerifyBlock>
       </Subsection>
     </Section>

@@ -43,6 +43,20 @@
       "tag": "Scripting",
       "chapters": "11 chapters",
       "level": "beginner"
+    },
+    "k8s-airgap-baremetal": {
+      "title": "Kubernetes HA Air-Gapped — Baremetal",
+      "desc": "Deploy a 3+3 Kubernetes HA cluster on air-gapped baremetal — no internet, no DHCP, no existing DNS.",
+      "tag": "Kubernetes",
+      "chapters": "19 chapters",
+      "level": "comprehensive"
+    },
+    "k8s-airgap-vsphere": {
+      "title": "Kubernetes HA Air-Gapped — vSphere",
+      "desc": "Deploy a 3+3 Kubernetes HA cluster on air-gapped vSphere — govc VM cloning, kernel args, no internet.",
+      "tag": "Kubernetes",
+      "chapters": "20 chapters",
+      "level": "comprehensive"
     }
   }
 }

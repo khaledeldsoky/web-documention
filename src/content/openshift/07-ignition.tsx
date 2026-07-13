@@ -73,8 +73,10 @@ sshKey: '<SSH_PUBLIC_KEY>'`}
         <CodeBlock lang="bash" label="WSL">
 {`# Generate Kubernetes manifests from install-config.yaml
 openshift-install create manifests --dir=$OCP4_DIR/config
+
 # Generate ignition configs (bootstrap, master, worker)
 openshift-install create ignition-configs --dir=$OCP4_DIR/config
+
 # Verify the 3 ignition files were created
 ls $OCP4_DIR/config/*.ign`}
         </CodeBlock>

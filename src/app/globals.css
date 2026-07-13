@@ -690,7 +690,7 @@ body {
 }
 
 .code-block pre .comment {
-  color: #6a9955;
+  color: #6bc950;
 }
 
 .code-block pre .keyword {
@@ -718,7 +718,7 @@ body {
 }
 
 .light .code-block pre .comment {
-  color: #6a9955;
+  color: #6bc950;
 }
 
 .light .code-block pre .keyword {
@@ -1221,6 +1221,10 @@ details[open] .collapsible-summary::before {
 .collapsible-body .code-block {
   border: none;
   margin-top: 0;
+}
+
+.collapsible-body .code-block .cb-head {
+  display: none;
 }
 
 /* ── PRINT ── */

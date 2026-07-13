@@ -6,6 +6,7 @@ import type { NavGroup } from "@/components/layout/Sidebar";
 import VarReplace from "@/components/docs/VarReplace";
 
 type Props = {
+  course: string;
   children: ReactNode;
   title: string;
   eyebrow?: string;
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export default function CoursePageClient({
+  course,
   children,
   title,
   eyebrow,
@@ -28,7 +30,7 @@ export default function CoursePageClient({
       sidebarGroups={sidebarGroups}
     >
       {children}
-      <VarReplace />
+      <VarReplace course={course} />
     </DocsPageLayout>
   );
 }

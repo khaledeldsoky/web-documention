@@ -23,24 +23,27 @@ govc vm.create \\
   -folder /<DATACENTER>/vm/ \\
   -on=false \\
   <NFS_HAPROXY_VM>
+
 # Attach the CentOS installation ISO
 govc device.cdrom.add -vm <NFS_HAPROXY_VM>
 govc vm.dvd.insert \\
   -vm <NFS_HAPROXY_VM> \\
   -ds <DATASTORE> \\
   <CENTOS_ISO>
+
 # Create a 100 GB data disk for NFS exports
 govc vm.disk.create \\
   -vm <NFS_HAPROXY_VM> \\
   -name <NFS_HAPROXY_VM>/nfs-data \\
   -size "100G" -ds <DATASTORE>
+
 # Power on and open the console for manual OS install
 govc vm.power -on <NFS_HAPROXY_VM>
 govc vm.console <NFS_HAPROXY_VM>`}
         </CodeBlock>
 
         <Callout variant="warn">
-          Open the console URL in a browser to install CentOS 9 manually. Set hostname <code>nfs-haproxy.<Var name="DOMAIN" /></code> and user <code>khaled</code>.
+          Open the console URL in a browser to install CentOS 9 manually. Set hostname <code>nfs-haproxy.<Var course="openshift-upi-v414" name="DOMAIN" /></code> and user <code>khaled</code>.
         </Callout>
       </Subsection>
 
@@ -50,6 +53,7 @@ govc vm.console <NFS_HAPROXY_VM>`}
         <CodeBlock lang="bash" label="nfs-haproxy">
 {`# SSH into the nfs-haproxy VM
 ssh -i ~/.ssh/openshift <NFS_HAPROXY_USER>@<NFS_HAPROXY_IP>
+
 # Set a static IP address with DNS
 sudo nmcli con mod ens32 \\
   ipv4.addresses <NFS_HAPROXY_IP>/16 \\
@@ -57,6 +61,7 @@ sudo nmcli con mod ens32 \\
   ipv4.dns <DNS1> \\
   ipv4.dns-search <DOMAIN> \\
   ipv4.method manual
+
 # Restart the interface and verify
 sudo nmcli con down ens32 && sudo nmcli con up ens32
 ip addr show ens32`}
@@ -124,11 +129,14 @@ backend openshift-ingress
 {`# Install HAProxy and create its run directory
 sudo dnf install -y haproxy
 sudo mkdir -p /var/lib/haproxy && sudo chown haproxy:haproxy /var/lib/haproxy
+
 # Allow HAProxy to connect to any network (required for backend servers)
 sudo setsebool -P haproxy_connect_any 1
+
 # Validate config, then enable and start the service
 sudo haproxy -c -f /etc/haproxy/haproxy.cfg
 sudo systemctl enable --now haproxy
+
 # Verify HAProxy is listening on all required ports
 sudo ss -tlnp | grep -E ':(6443|22623|443|80)'`}
         </CodeBlock>
@@ -144,6 +152,7 @@ sudo ss -tlnp | grep -E ':(6443|22623|443|80)'`}
 {`# Install and start firewalld
 sudo dnf install -y firewalld
 sudo systemctl enable --now firewalld
+
 # Open required services (HTTP, HTTPS, NFS) and cluster ports
 sudo firewall-cmd --permanent --add-service={http,https,nfs,rpc-bind,mountd}
 sudo firewall-cmd --permanent --add-port={6443/tcp,22623/tcp}
@@ -155,23 +164,27 @@ sudo firewall-cmd --reload`}
         <CodeBlock lang="bash" label="nfs-haproxy">
 {`# Install NFS utilities
 sudo dnf install -y nfs-utils
+
 # Create the NFS export directory with open permissions
 sudo mkdir -p <NFS_EXPORT>
 sudo chown -R nobody:nobody <NFS_EXPORT>
 sudo chmod 777 <NFS_EXPORT>
+
 # Format the data disk as XFS and mount it to the export path
 sudo mkfs.xfs /dev/sdb
 sudo mount /dev/sdb <NFS_EXPORT>
+
 # Persist mount in fstab and configure the NFS export
 echo "/dev/sdb <NFS_EXPORT> xfs defaults 0 0" | sudo tee -a /etc/fstab
 echo "<NFS_EXPORT> *(rw,sync,no_subtree_check,no_root_squash)" | sudo tee -a /etc/exports
+
 # Apply exports and start the NFS server
 sudo exportfs -r
 sudo systemctl enable --now nfs-server`}
         </CodeBlock>
 
         <VerifyBlock>
-          <p><code>showmount -e localhost</code> — shows <code><Var name="NFS_EXPORT" /> *</code></p>
+          <p><code>showmount -e localhost</code> — shows <code><Var course="openshift-upi-v414" name="NFS_EXPORT" /> *</code></p>
         </VerifyBlock>
       </Subsection>
 
@@ -179,8 +192,10 @@ sudo systemctl enable --now nfs-server`}
         <CodeBlock lang="bash" label="nfs-haproxy">
 {`# Install SELinux management tools
 sudo dnf install -y policycoreutils-python-utils
+
 # Allow NFS to export filesystems with read-write
 sudo setsebool -P nfs_export_all_rw on
+
 # Label ports 6443 and 22623 for HAProxy (instead of http_port_t)
 sudo semanage port -a -t haproxy_port_t -p tcp 6443
 sudo semanage port -a -t haproxy_port_t -p tcp 22623`}
@@ -197,6 +212,7 @@ sudo semanage port -a -t haproxy_port_t -p tcp 22623`}
 {`# Add API and Ingress VIPs temporarily (live until reboot)
 sudo ip addr add <API_IP>/16 dev ens32
 sudo ip addr add <APPS_IP>/16 dev ens32
+
 # Persist VIPs via NetworkManager and restart the interface
 sudo nmcli con mod ens32 +ipv4.addresses <API_IP>/16
 sudo nmcli con mod ens32 +ipv4.addresses <APPS_IP>/16
@@ -204,7 +220,7 @@ sudo nmcli con down ens32 && sudo nmcli con up ens32`}
         </CodeBlock>
 
         <VerifyBlock>
-          <p><code>ip addr show ens32 | grep <Var name="API_IP" /></code> shows both VIPs on the interface.</p>
+          <p><code>ip addr show ens32 | grep <Var course="openshift-upi-v414" name="API_IP" /></code> shows both VIPs on the interface.</p>
         </VerifyBlock>
       </Subsection>
     </Section>

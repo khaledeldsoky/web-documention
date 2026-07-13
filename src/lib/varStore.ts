@@ -1,28 +1,29 @@
 export type VarMap = Record<string, string>;
 type Listener = () => void;
 
-let store: VarMap = {};
+const stores: Record<string, VarMap> = {};
 const listeners = new Set<Listener>();
 
-export function getStore(): VarMap {
-  return store;
+export function getStore(course: string): VarMap {
+  return stores[course] ?? {};
 }
 
-export function setVar(name: string, value: string) {
-  store = { ...store, [name]: value };
+export function setVar(course: string, name: string, value: string) {
+  const s = stores[course] ?? {};
+  stores[course] = { ...s, [name]: value };
   try {
-    localStorage.setItem("openshift-vars", JSON.stringify(store));
+    localStorage.setItem(`${course}-vars`, JSON.stringify(stores[course]));
   } catch {}
   listeners.forEach((fn) => fn());
 }
 
-export function loadFromStorage() {
+export function loadFromStorage(course: string) {
   try {
-    const raw = localStorage.getItem("openshift-vars");
+    const raw = localStorage.getItem(`${course}-vars`);
     if (raw) {
       const parsed = JSON.parse(raw);
       if (typeof parsed === "object" && parsed !== null) {
-        store = { ...store, ...parsed };
+        stores[course] = { ...stores[course], ...parsed };
         listeners.forEach((fn) => fn());
       }
     }

@@ -10,36 +10,36 @@ export const sidebarGroups: NavGroup[] = [
     icon: "📋",
     label: "Getting Started",
     items: [
-      { id: "variables", label: "1. Variables" },
-      { id: "prerequisites", label: "2. Prerequisites" },
-      { id: "wsl-prep", label: "3. WSL Setup" },
+      { id: "variables", label: "1 - Variables" },
+      { id: "prerequisites", label: "2 - Prerequisites" },
+      { id: "wsl-prep", label: "3 - WSL Setup" },
     ],
   },
   {
     icon: "🔌",
     label: "vSphere",
     items: [
-      { id: "vsphere-prep", label: "4. vSphere Environment" },
-      { id: "nfs-haproxy", label: "5. HAProxy + NFS VM" },
-      { id: "ocp-vms", label: "6. OpenShift VMs" },
+      { id: "vsphere-prep", label: "4 - vSphere Environment" },
+      { id: "nfs-haproxy", label: "5 - HAProxy + NFS VM" },
+      { id: "ocp-vms", label: "6 - OpenShift VMs" },
     ],
   },
   {
     icon: "🚀",
     label: "Installation",
     items: [
-      { id: "ignition", label: "7. Generate Ignition Configs" },
-      { id: "cluster-install", label: "8. Cluster Install" },
-      { id: "postinstall", label: "9. Post-Install" },
+      { id: "ignition", label: "7 - Generate Ignition Configs" },
+      { id: "cluster-install", label: "8 - Cluster Install" },
+      { id: "postinstall", label: "9 - Post-Install" },
     ],
   },
   {
     icon: "⚙️",
     label: "Operations",
     items: [
-      { id: "cleanup", label: "10. Cleanup" },
-      { id: "troubleshooting", label: "11. Troubleshooting" },
-      { id: "tests", label: "12. Verification Tests" },
+      { id: "cleanup", label: "10 - Cleanup" },
+      { id: "troubleshooting", label: "11 - Troubleshooting" },
+      { id: "tests", label: "12 - Verification Tests" },
     ],
   },
 ];

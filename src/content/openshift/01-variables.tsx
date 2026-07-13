@@ -9,6 +9,7 @@ export function Section1() {
       <Prose>Fill in your environment values. Each amber-highlighted variable is reused everywhere in the guide.</Prose>
       <Prose>All changeable values are shown in amber. Replace with your environment.</Prose>
       <VariablesTable
+        course="openshift-upi-v414"
         columns={[{ header: "Category", key: "cat" }, { header: "Variable", key: "var" }, { header: "Value", key: "val" }, { header: "Example (Command)", key: "cmd" }]}
         rows={[
           { cat: "vSphere", var: "VCENTER_IP", val: "<VCENTER_IP>", cmd: "192.168.1.10" },

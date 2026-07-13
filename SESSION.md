@@ -1,4 +1,4 @@
-# Session State — 2026-07-09
+# Session State — 2026-07-13
 
 ## Project
 Bilingual (en/ar) Next.js 16 doc website for technical guides.
@@ -8,11 +8,47 @@ Bilingual (en/ar) Next.js 16 doc website for technical guides.
 ## What's working
 - i18n routing (en/ar), locale-aware layout, theme toggle
 - Landing page with course cards + search filter
-- One course registered: `openshift-upi-v414` (content in `src/content/openshift.tsx`, 1049 lines)
+- Four courses registered: `openshift-upi-v414` (12 sections), `linux-admin` (23 sections), `k8s-airgap-baremetal` (19 sections), `k8s-airgap-vsphere` (20 sections)
 - All doc components built (Cover, Section, CodeBlock, Callout, etc.)
-- Variable system (varStore — localStorage-backed, reactive)
+- Variable system (varStore — namespaced per course, localStorage-backed, reactive, 3-case rules)
 - Syntax highlighting via shiki (github-dark/github-light themes)
 - Sidebar with IntersectionObserver active-tracking, collapsible groups
+
+## Session 2026-07-13 — k8s Air-Gap Courses + Image Fixes + Variable System
+
+### k8s-airgap-baremetal course (19 sections, COMPLETE)
+44. Created `k8s-airgap-baremetal` course — 19 sections (0-18) in `src/content/k8s-airgap-baremetal/`
+45. Section 0: VariablesTable with 30+ vars (Node IPs, Network, Versions, Infra)
+46. Section 3: Offline bundle with "Find Your Versions" subsection
+47. Registered in index.ts, messages/en.json, messages/ar.json, landing page
+
+### k8s-airgap-vsphere course (20 sections, COMPLETE)
+48. Created `k8s-airgap-vsphere` course — 20 sections (0-19), fork of baremetal
+49. Section 2 (NEW): Create VMs with govc (5 subsections: Install govc, Upload ISO, Create template VM, Clone VMs, Verify network)
+50. Sections 4-19: Renumbered from baremetal 3-18
+51. Registered in index.ts, messages/en.json, messages/ar.json, landing page
+
+### Variable system per-course namespacing
+52. `varStore.ts` rewritten with `course` parameter — `getStore(course)`, `setVar(course, name, value)`, localStorage key `{course}-vars`
+53. `VariablesTable`, `Var`, `VarReplace` all accept `course` prop
+54. `CoursePageClient` passes `slug` as `course`
+55. All existing `<Var>` usages updated with `course` prop
+
+### Variable 3-case rules
+56. Documented in `docs/VARIABLE-RULES.md`
+57. VariablesTable uses `vars[varName] || val` + `vars[varName] !== ""` color logic
+58. VarReplace uses `value === ""` check (keeps `<VAR>` for undefined, clears for empty)
+
+### Image tag fixes + Helm binary
+59. Removed `htop` from all dnf commands (not available in repo)
+60. Moved helm from RPM to binary download (tarball from GitHub)
+61. Added "Install Docker on Staging Machine" subsection to offline bundle
+62. Added helm version discovery to "Find Your Versions"
+63. Converted hard-coded `flannel-cni-plugin:v1.5.1` → `<FLANNEL_CNI_VERSION>` variable
+64. Converted hard-coded `kube-webhook-certgen:v1.5.1` → `<INGRESS_WEBHOOK_VERSION>` variable
+65. Fixed METALLB_VERSION double-v bug in GitHub URL (`v<METALLB_VERSION>` → `<METALLB_VERSION>`)
+66. Updated example versions: COREDNS `1.13.2`, FLANNEL `v0.28.7`, INGRESS_NGINX `v1.15.1`
+67. Added `HELM_VERSION`, `FLANNEL_CNI_VERSION`, `INGRESS_WEBHOOK_VERSION` to VariablesTables
 
 ## Fixes applied from ocp4-install/Update-openshift-docs.ipynb
 1. Firewall section: `systemctl enable --now` moved before `firewall-cmd` rules (firewalld must be running)
@@ -72,25 +108,83 @@ Bilingual (en/ar) Next.js 16 doc website for technical guides.
     - Applied to: install-config.yaml (7.1), pyVmomi script (7.3), registry-nfs.yaml (9.1)
     - Also updated pyVmomi Collapsible title and CodeBlock label to show file path instead of generic "requires pyVmomi"
 
+## Session 2026-07-12 — Linux Admin Course (23 sections, COMPLETE)
+
+34. Created `linux-admin` course — 23 sections (0-22) in `src/content/linux/` sourced from `/root/Documentation/en/courses/linux-admin/index.html`.
+    - Reorganized from original 24 HTML sections: merged Firewall+Network Ports → Section 11, merged XFS/Ext4+Storage → Section 13
+    - Added new Section 2 (Navigating the Filesystem) for beginners
+    - Moved Nginx vs Apache + HTTP Errors to end of course (Sections 21-22)
+35. Section 1 enhancements: added /proc and /sys live code examples, /etc/tmpfiles.d subsection, cross-linked to other sections
+36. Section 0 cross-reference fix: HTML references "Section 22 — Rescue Mode & GRUB" → corrected to #rescue-grub (Section 19)
+37. Registered `linux-admin` in `src/content/index.ts`, `messages/en.json` (already had entries), landing page (already listed)
+38. Created course module `src/content/linux.tsx` with Cover + sidebarGroups (7 groups) + all Section imports
+39. Created barrel `src/content/linux/sections.ts` (Section0-Section22)
+40. All 23 sections fully ported with component pattern: Section, Subsection, Prose, CodeBlock, InfoTable, Callout, VerifyBlock, BenefitGrid, StepList
+41. Sections use identical conventions as OpenShift course: empty lines before comments, comment color #6bc950, nested CodeBlock border removal pending
+
+## Session 2026-07-12 — InfoTable fix + sidebar labels
+
+42. Fixed `InfoTable` component — cell values now render HTML via `dangerouslySetInnerHTML`. Previously `<code>` and `<strong>` tags in row values showed as raw text.
+43. Sidebar section labels changed from `"N. Title"` to `"N - Title"` in both courses (linux-admin: 23 labels, openshift: 12 labels).
+
+### Section inventory (0-22)
+0. Boot Process — StepList, CodeBlock, InfoTable, VerifyBlock, Callout
+1. Linux Filesystem Hierarchy — 7 subsections (enhanced with /proc, /sys, tmpfiles.d)
+2. Navigating the Filesystem — 7 subsections (new beginner content)
+3. Links — InfoTable, CodeBlock ×2, Callout
+4. SSH — Remote Access — CodeBlock ×3, VerifyBlock, Callout ×2
+5. Users & Groups — InfoTable ×2, CodeBlock ×4, Callout ×2
+6. Permissions — InfoTable ×3, CodeBlock ×4, Callout ×4
+7. Package Management — InfoTable ×2, CodeBlock ×4, Callout ×2
+8. SELinux — InfoTable, CodeBlock ×4, BenefitGrid, Callout ×2
+9. Kernel & Modules — InfoTable ×2, CodeBlock ×4, Callout ×2
+10. Logging & Log Management — InfoTable, CodeBlock ×4, Callout ×2
+11. Firewall & Ports (merged) — InfoTable ×2, CodeBlock ×4, VerifyBlock, Callout ×3
+12. Networking Configuration — InfoTable, CodeBlock ×4, Callout ×2
+13. Storage — Disks, LVM & Filesystems (merged) — BenefitGrid, InfoTable ×3, CodeBlock ×8, VerifyBlock ×2, Callout ×5
+14. Systemd Deep Dive — InfoTable ×3, CodeBlock ×5, Callout ×2
+15. Cron & At — InfoTable, CodeBlock ×2, VerifyBlock, Callout ×2
+16. Performance Diagnostics — InfoTable, CodeBlock ×5, Callout ×2
+17. Process Management — InfoTable ×3, CodeBlock ×3, VerifyBlock, Callout ×2
+18. Troubleshooting — StepList, CodeBlock ×3, InfoTable, Callout
+19. Rescue Mode & GRUB — CodeBlock ×3, VerifyBlock, Callout ×2
+20. Essential Commands — CodeBlock ×8
+21. Nginx vs Apache — BenefitGrid, InfoTable, CodeBlock, Callout
+22. HTTP 400 vs 500 — BenefitGrid ×2, InfoTable, VerifyBlock
+
 ## File structure
 - `src/content/openshift.tsx` — composer (~40 lines, imports sections + Cover + sidebarGroups)
 - `src/content/openshift/` — 12 section files (`01-variables.tsx` through `12-tests.tsx`) + barrel `sections.ts`
+- `src/content/linux.tsx` — linux course module (Cover + sidebarGroups + all Section imports)
+- `src/content/linux/` — 23 section files (`00-boot-process.tsx` through `22-http-errors.tsx`) + barrel `sections.ts`
+- `src/content/k8s-airgap-baremetal.tsx` — course module (Cover + sidebarGroups 6 groups)
+- `src/content/k8s-airgap-baremetal/` — 19 section files (0-18) + barrel `sections.ts`
+- `src/content/k8s-airgap-vsphere.tsx` — course module (Cover + sidebarGroups 7 groups)
+- `src/content/k8s-airgap-vsphere/` — 20 section files (0-19) + barrel `sections.ts`
 - `src/components/docs/Collapsible.tsx` — collapsible config block component
 - `src/content/scripts/setup-env.sh` — downloadable env template
+- `docs/VARIABLE-RULES.md` — variable 3-case system documentation
 - `ARCHITECTURE.md` — AI agent reference: components, patterns, variables, file map
 
 ## Quick commands
 - `npm run dev` — start dev server
 - `npm run build` — build for production
 - `npm run lint` — run ESLint
-- `npx tsc --noEmit` — typecheck (pre-existing `next-intl` errors only)
+- `npx tsc --noEmit --skipLibCheck` — typecheck (pre-existing `next-intl` errors only)
 
 ## Key files
 - `src/content/openshift.tsx` — course composer
 - `src/content/openshift/sections.ts` — barrel re-exporting all 12 sections
-- `src/content/index.ts` — course registry
+- `src/content/linux.tsx` — linux course module
+- `src/content/linux/sections.ts` — barrel re-exporting all 23 sections
+- `src/content/k8s-airgap-baremetal.tsx` — baremetal k8s course module
+- `src/content/k8s-airgap-baremetal/sections.ts` — barrel re-exporting all 19 sections
+- `src/content/k8s-airgap-vsphere.tsx` — vSphere k8s course module
+- `src/content/k8s-airgap-vsphere/sections.ts` — barrel re-exporting all 20 sections
+- `src/content/index.ts` — course registry (4 courses)
+- `src/lib/varStore.ts` — variable store (namespaced per course)
 - `src/app/globals.css` — all styles, CSS vars, RTL rules
 - `src/app/[locale]/layout.tsx` — locale-aware root layout
-- `src/components/docs/` — 16 doc components
+- `src/components/docs/` — 17 doc components (Var, VariablesTable, VarReplace accept `course` prop)
 - `src/components/layout/` — 4 layout components
-- `messages/en.json` / `messages/ar.json` — translations
+- `messages/en.json` / `messages/ar.json` — translations (4 courses)

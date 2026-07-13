@@ -53,6 +53,7 @@ spec:
         <CodeBlock lang="bash" label="WSL">
 {`# Apply the PV and PVC
 oc apply -f registry-nfs.yaml
+
 # Patch the image registry to use the PVC
 oc patch configs.imageregistry.operator.openshift.io cluster \\
   --type merge \\
@@ -69,10 +70,13 @@ oc patch configs.imageregistry.operator.openshift.io cluster \\
         <CodeBlock lang="bash" label="WSL">
 {`# Check all cluster operators are healthy
 oc get clusteroperators
+
 # Verify the cluster version and upgrade status
 oc get clusterversion
+
 # List all nodes with detailed info
 oc get nodes -o wide
+
 # List all pods across all namespaces
 oc get pods --all-namespaces`}
         </CodeBlock>
@@ -88,6 +92,7 @@ oc get pods --all-namespaces`}
 {`# Show the kubeadmin password and web console URL
 cat $OCP4_DIR/config/auth/kubeadmin-password
 echo "https://console-openshift-console.apps.<DOMAIN>"
+
 # Log in to the cluster via CLI
 oc login -u kubeadmin -p "$(cat $OCP4_DIR/config/auth/kubeadmin-password)" \\
   https://api.<DOMAIN>:6443`}

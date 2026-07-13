@@ -1,22 +1,27 @@
 "use client";
 
 import { useEffect } from "react";
-import { getStore, subscribe } from "@/lib/varStore";
+import { getStore, subscribe, loadFromStorage } from "@/lib/varStore";
 
-export default function VarReplace() {
+type Props = {
+  course: string;
+};
+
+export default function VarReplace({ course }: Props) {
   useEffect(() => {
+    loadFromStorage(course);
     const main = document.querySelector(".main") || document.body;
 
     function replace() {
-      const vars = getStore();
+      const vars = getStore(course);
       main.querySelectorAll("[data-var]").forEach((el) => {
         const name = el.getAttribute("data-var");
         if (!name) return;
         const value = vars[name];
         if (value && el.textContent !== value) {
           el.textContent = value;
-        } else if (!value && el.textContent !== `<${name}>`) {
-          el.textContent = `<${name}>`;
+        } else if (value === "" && el.textContent !== "") {
+          el.textContent = "";
         }
       });
     }
@@ -35,7 +40,7 @@ export default function VarReplace() {
       unsub();
       observer.disconnect();
     };
-  }, []);
+  }, [course]);
 
   return null;
 }

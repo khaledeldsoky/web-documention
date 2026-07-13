@@ -22,7 +22,7 @@ export default function InfoTable({ columns, rows }: Props) {
         {rows.map((row, ri) => (
           <tr key={ri}>
             {columns.map((col, ci) => (
-              <td key={ci}>{row[col.key]}</td>
+              <td key={ci} dangerouslySetInnerHTML={{ __html: row[col.key] }} />
             ))}
           </tr>
         ))}

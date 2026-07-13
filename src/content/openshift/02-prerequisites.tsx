@@ -47,49 +47,49 @@ export function Section2() {
           </thead>
           <tbody>
             <tr>
-              <td>api.<Var name="DOMAIN" /></td>
+              <td>api.<Var course="openshift-upi-v414" name="DOMAIN" /></td>
               <td>A</td>
-              <td><Var name="API_IP" /></td>
+              <td><Var course="openshift-upi-v414" name="API_IP" /></td>
             </tr>
             <tr>
-              <td>api-int.<Var name="DOMAIN" /></td>
+              <td>api-int.<Var course="openshift-upi-v414" name="DOMAIN" /></td>
               <td>A</td>
-              <td><Var name="API_IP" /></td>
+              <td><Var course="openshift-upi-v414" name="API_IP" /></td>
             </tr>
             <tr>
-              <td>*.apps.<Var name="DOMAIN" /></td>
+              <td>*.apps.<Var course="openshift-upi-v414" name="DOMAIN" /></td>
               <td>A</td>
-              <td><Var name="APPS_IP" /></td>
+              <td><Var course="openshift-upi-v414" name="APPS_IP" /></td>
             </tr>
             <tr>
-              <td>bootstrap.<Var name="DOMAIN" /></td>
+              <td>bootstrap.<Var course="openshift-upi-v414" name="DOMAIN" /></td>
               <td>A</td>
-              <td><Var name="BOOTSTRAP_IP" /></td>
+              <td><Var course="openshift-upi-v414" name="BOOTSTRAP_IP" /></td>
             </tr>
             <tr>
-              <td>master-0.<Var name="DOMAIN" /></td>
+              <td>master-0.<Var course="openshift-upi-v414" name="DOMAIN" /></td>
               <td>A</td>
-              <td><Var name="MASTER_0_IP" /></td>
+              <td><Var course="openshift-upi-v414" name="MASTER_0_IP" /></td>
             </tr>
             <tr>
-              <td>master-1.<Var name="DOMAIN" /></td>
+              <td>master-1.<Var course="openshift-upi-v414" name="DOMAIN" /></td>
               <td>A</td>
-              <td><Var name="MASTER_1_IP" /></td>
+              <td><Var course="openshift-upi-v414" name="MASTER_1_IP" /></td>
             </tr>
             <tr>
-              <td>master-2.<Var name="DOMAIN" /></td>
+              <td>master-2.<Var course="openshift-upi-v414" name="DOMAIN" /></td>
               <td>A</td>
-              <td><Var name="MASTER_2_IP" /></td>
+              <td><Var course="openshift-upi-v414" name="MASTER_2_IP" /></td>
             </tr>
             <tr>
-              <td>worker-0.<Var name="DOMAIN" /></td>
+              <td>worker-0.<Var course="openshift-upi-v414" name="DOMAIN" /></td>
               <td>A</td>
-              <td><Var name="WORKER_0_IP" /></td>
+              <td><Var course="openshift-upi-v414" name="WORKER_0_IP" /></td>
             </tr>
             <tr>
-              <td>worker-1.<Var name="DOMAIN" /></td>
+              <td>worker-1.<Var course="openshift-upi-v414" name="DOMAIN" /></td>
               <td>A</td>
-              <td><Var name="WORKER_1_IP" /></td>
+              <td><Var course="openshift-upi-v414" name="WORKER_1_IP" /></td>
             </tr>
           </tbody>
         </table>

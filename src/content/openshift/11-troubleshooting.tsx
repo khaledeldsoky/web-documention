@@ -14,6 +14,7 @@ export function Section11() {
         <CodeBlock lang="bash" label="WSL">
 {`nc -zv <VCENTER_IP> 443
 env | grep GOVC
+
 # Ensure GOVC_INSECURE=true for self-signed certs`}
         </CodeBlock>
         <Callout variant="info">
@@ -25,10 +26,13 @@ env | grep GOVC
         <CodeBlock lang="bash" label="WSL — SSH to bootstrap">
 {`# SSH into the bootstrap VM to inspect logs
 ssh -i ~/.ssh/openshift core@<BOOTSTRAP_IP>
+
 # Check image pull and setup progress
 sudo journalctl -b -f -u release-image.service -u setup.service
+
 # Check bootkube (Kubernetes bootstrap)
 sudo journalctl -b -f -u bootkube.service
+
 # Check kubelet health
 sudo journalctl -b -f -u kubelet.service`}
         </CodeBlock>
@@ -41,8 +45,10 @@ sudo journalctl -b -f -u kubelet.service`}
         <CodeBlock lang="bash" label="WSL — SSH to master">
 {`# SSH into a master node to troubleshoot
 ssh -i ~/.ssh/openshift core@<MASTER_0_IP>
+
 # Follow kubelet logs in real-time
 sudo journalctl -u kubelet -f
+
 # List running containers via CRI-O
 sudo crictl ps`}
         </CodeBlock>
@@ -55,6 +61,7 @@ sudo crictl ps`}
         <CodeBlock lang="bash" label="nfs-haproxy">
 {`# Check SELinux denials that might affect HAProxy
 sudo ausearch -m avc -ts recent
+
 # Verify ignition guestinfo keys are set on the bootstrap VM
 govc vm.info -e <BOOTSTRAP_VM> | grep guestinfo.ignition`}
         </CodeBlock>
@@ -68,11 +75,12 @@ govc vm.info -e <BOOTSTRAP_VM> | grep guestinfo.ignition`}
 {`# Test DNS resolution for the cluster API
 nslookup api.<DOMAIN> <DNS1>
 dig api.<DOMAIN> @<DNS1>
+
 # Check local resolver config
 cat /etc/resolv.conf`}
         </CodeBlock>
         <Callout variant="info">
-          <code>nslookup</code> or <code>dig</code> should return the API IP (<code><Var name="API_IP" /></code>). If it returns <code>NXDOMAIN</code> or <code>SERVFAIL</code>, the A record is missing or the DNS server hasn't reloaded. Check <code>/etc/resolv.conf</code> points to the correct DNS server (<code><Var name="DNS1" /></code>).
+          <code>nslookup</code> or <code>dig</code> should return the API IP (<code><Var course="openshift-upi-v414" name="API_IP" /></code>). If it returns <code>NXDOMAIN</code> or <code>SERVFAIL</code>, the A record is missing or the DNS server hasn't reloaded. Check <code>/etc/resolv.conf</code> points to the correct DNS server (<code><Var course="openshift-upi-v414" name="DNS1" /></code>).
         </Callout>
       </Subsection>
 
@@ -80,13 +88,15 @@ cat /etc/resolv.conf`}
         <CodeBlock lang="bash" label="WSL">
 {`# Check image registry logs for errors
 oc logs -n openshift-image-registry deployment/image-registry
+
 # Test NFS export visibility from a cluster node
 oc debug node/<MASTER_PREFIX>-0 -- chroot /host showmount -e <NFS_HAPROXY_IP>
+
 # Test NFS mount from a cluster node
 oc debug node/<MASTER_PREFIX>-0 -- chroot /host mount -t nfs <NFS_HAPROXY_IP>:<NFS_EXPORT> /mnt`}
         </CodeBlock>
         <Callout variant="info">
-          If <code>showmount</code> fails, the NFS server or firewall on nfs-haproxy (<a href="#nfs-haproxy">Section 5.4–5.5</a>) isn't configured correctly. If <code>mount</code> fails but <code>showmount</code> works, check <code><Var name="NFS_EXPORT" /></code> path and permissions on the nfs-haproxy VM. Registry pod logs showing <code>AccessDenied</code> usually mean SELinux blocking NFS.
+          If <code>showmount</code> fails, the NFS server or firewall on nfs-haproxy (<a href="#nfs-haproxy">Section 5.4–5.5</a>) isn't configured correctly. If <code>mount</code> fails but <code>showmount</code> works, check <code><Var course="openshift-upi-v414" name="NFS_EXPORT" /></code> path and permissions on the nfs-haproxy VM. Registry pod logs showing <code>AccessDenied</code> usually mean SELinux blocking NFS.
         </Callout>
       </Subsection>
 

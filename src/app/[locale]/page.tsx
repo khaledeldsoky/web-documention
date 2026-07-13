@@ -5,10 +5,12 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 const courses = [
+  "bash-basics",
   "github-actions",
+  "k8s-airgap-baremetal",
+  "k8s-airgap-vsphere",
   "linux-admin",
   "openshift-upi-v414",
-  "bash-basics",
 ] as const;
 
 export default function LandingPage() {

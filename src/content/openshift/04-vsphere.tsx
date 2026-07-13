@@ -15,6 +15,7 @@ export function Section4() {
 export RHCOS_VERSION=4.14.0
  cd $OCP4_DIR/rhcos
  wget https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.14/\${RHCOS_VERSION}/rhcos-\${RHCOS_VERSION}-x86_64-vmware.x86_64.ova
+
  # Verify checksum
  sha256sum rhcos-\${RHCOS_VERSION}-x86_64-vmware.x86_64.ova`}
         </CodeBlock>
@@ -30,11 +31,12 @@ govc import.ova \\
   -folder /<DATACENTER>/vm/ \\
   -net "<NETWORK>" \\
   $OCP4_DIR/rhcos/rhcos-4.14.0-x86_64-vmware.x86_64.ova
+
 # Convert the VM to a reusable template
 govc vm.markastemplate <RHCOS_TEMPLATE>`}
         </CodeBlock>
         <VerifyBlock>
-          <p><code>{'govc vm.info '}<Var name="RHCOS_TEMPLATE" /></code> shows the VM as a template.</p>
+          <p><code>{'govc vm.info '}<Var course="openshift-upi-v414" name="RHCOS_TEMPLATE" /></code> shows the VM as a template.</p>
         </VerifyBlock>
       </Subsection>
     </Section>
