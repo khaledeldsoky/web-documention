@@ -4,7 +4,7 @@
     "courses": "الكورسات",
     "search": "ابحث في الكورسات ...",
     "back": "رجوع",
-    "footer": "دليل التقنية — Documentation Hub"
+    "footer": "قطعة من العلم"
   },
   "topbar": {
     "language": "English",
@@ -12,15 +12,15 @@
     "back": "رجوع"
   },
   "cover": {
-    "title": "دليل التقنية <hl>الشامل</hl>",
-    "sub": "شرح عملي مبسط لكل ما تحتاجه — من أساسيات CI/CD إلى إدارة الخوادم"
+    "title": "<hl>قطعة</hl> من العلم",
+    "sub": "دروس عملية للمهندس الفضولي"
   },
   "courses": {
-    "github-actions": {
-      "title": "GitHub Actions",
-      "desc": "دليل متكامل من الصفر — Workflow, Jobs, Steps, Matrix, Needs، من البداية إلى النشر الفعلي.",
-      "tag": "CI/CD",
-      "chapters": "11 فصل",
+    "k8s-airgap-ha": {
+      "title": "نشر كوبيرونيتس HA بدون إنترنت",
+      "desc": "نشر كلاستر كوبيرونيتس HA مكون من 3+3 عقد على بنية معزولة — registry, DNS, NTP, Flannel, MetalLB, NGINX Ingress. عزل تام.",
+      "tag": "Kubernetes",
+      "chapters": "21 فصل",
       "level": "شامل"
     },
     "linux-admin": {
@@ -37,26 +37,26 @@
       "chapters": "12 فصل",
       "level": "شامل"
     },
+    "storage-iscsi-3lun": {
+      "title": "تكوين التخزين iSCSI بـ 3 LUN",
+      "desc": "تكوين مصفوفة Dell EMC ME4024 وثلاث عقد RHEL 9 — iSCSI, MPIO, LVM, XFS، تكامل Kubernetes، وإجراءات التعافي من الكوارث.",
+      "tag": "Storage",
+      "chapters": "10 فصول",
+      "level": "شامل"
+    },
+    "github-actions": {
+      "title": "دليل GitHub Actions",
+      "desc": "من الصفر إلى CI/CD — سير العمل، بنية YAML، مصفوفة البناء، سير العمل القابل لإعادة الاستخدام، الأمان، وأسئلة المقابلات.",
+      "tag": "CI/CD",
+      "chapters": "11 فصل",
+      "level": "مناسب للمبتدئين"
+    },
     "bash-basics": {
-      "title": "أساسيات Bash",
-      "desc": "مرجع سريع لأشهر أنماط Bash scripting — الشروط، الحلقات، والدوال.",
+      "title": "أساسيات برمجة Bash",
+      "desc": "مرجع سريع لأكثر أنماط Bash شيوعًا — الشروط، الحلقات، والدوال مع نصوص جاهزة للنسخ.",
       "tag": "Scripting",
       "chapters": "11 فصل",
       "level": "مبتدئ"
-    },
-    "k8s-airgap-baremetal": {
-      "title": "كوبيرونيتس HA بدون إنترنت — Baremetal",
-      "desc": "نشر كلاستر كوبيرونيتس HA مكون من 3+3 عقد على بيريمتال معزول — بدون إنترنت، بدون DHCP، بدون DNS.",
-      "tag": "Kubernetes",
-      "chapters": "19 فصل",
-      "level": "شامل"
-    },
-    "k8s-airgap-vsphere": {
-      "title": "كوبيرونيتس HA بدون إنترنت — vSphere",
-      "desc": "نشر كلاستر كوبيرونيتس HA مكون من 3+3 عقد على vSphere معزول — govc، kernel args، بدون إنترنت.",
-      "tag": "Kubernetes",
-      "chapters": "20 فصل",
-      "level": "شامل"
     }
   }
 }

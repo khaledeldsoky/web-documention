@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { getStore, setVar, subscribe, loadFromStorage } from "@/lib/varStore";
+import { setVar } from "@/lib/varStore";
+import { useVarStore } from "@/lib/useVarStore";
 
 type Column = {
   header: string;
@@ -15,13 +15,7 @@ type Props = {
 };
 
 export default function VariablesTable({ course, columns, rows }: Props) {
-  const [vars, setVars] = useState(() => getStore(course));
-
-  useEffect(() => {
-    loadFromStorage(course);
-    setVars({ ...getStore(course) });
-    return subscribe(() => setVars({ ...getStore(course) }));
-  }, [course]);
+  const vars = useVarStore(course);
 
   const groups: { cat: string; rows: typeof rows }[] = [];
   let currentCat = "";

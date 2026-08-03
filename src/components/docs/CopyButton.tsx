@@ -20,7 +20,11 @@ export default function CopyButton({ code }: Props) {
   };
 
   return (
-    <button className="cb-copy" onClick={handleCopy}>
+    <button
+      className="cb-copy"
+      onClick={handleCopy}
+      aria-label={copied ? "Copied to clipboard" : "Copy code to clipboard"}
+    >
       {copied ? "copied" : "copy"}
     </button>
   );

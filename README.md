@@ -16,13 +16,23 @@ Open [http://localhost:3000](http://localhost:3000) — hot reload with Turbopac
 
 ## Available Courses
 
-| Slug | Title | Sections | Language |
-|------|-------|----------|----------|
-| `openshift-upi-v414` | OpenShift 4.14 UPI on vSphere | 12 | en |
+| Slug | Title | Sections |
+|------|-------|----------|
+| `openshift-upi-v414` | OpenShift 4.14 UPI on vSphere | 12 |
+| `linux-admin` | Linux System Administration | 23 |
+| `k8s-airgap-ha` | Kubernetes HA Air-Gapped Deployment | 24 |
 
 ### Course: OpenShift 4.14 UPI on vSphere
 
 User-provisioned infrastructure guide covering HAProxy, NFS storage, RHCOS templates, ignition injection via pyVmomi, cluster install, post-install, cleanup, and verification tests. All configurable values (IPs, credentials, paths) use a live variable system — edit once, reflected everywhere.
+
+### Course: Linux System Administration
+
+Comprehensive guide from boot process to performance tuning — 23 sections covering filesystem, SSH, users, permissions, packages, SELinux, networking, storage, systemd, and more.
+
+### Course: Kubernetes HA Air-Gapped Deployment
+
+Deploy a 3+3 Kubernetes HA cluster on air-gapped infrastructure — registry, DNS, NTP, containerd, kube-vip, Flannel, MetalLB, NGINX Ingress. All configurable values use a live variable system.
 
 ## Adding a Course
 
@@ -76,7 +86,8 @@ Course content uses `<Var name="VARIABLE_NAME" />` placeholders that render as a
 ## Conventions
 
 - Default locale is `ar` (Arabic), RTL-first design
-- Code blocks use labeled language tags (`bash`, `yaml`, `ini`)
+- Code blocks use labeled language tags (`bash`, `yaml`, `ini`); labels render as bold teal to indicate execution context
+- Air-gap courses automate multi-node commands via `run-all` helper scripts (passwordless SSH from master1)
 - SSH + remote command sequences are contained in a single `CodeBlock` (SSH as first line)
 - Each section/subsection is prefixed with a JSX comment for navigation in source
 - Blank lines separate adjacent JSX block elements for readability

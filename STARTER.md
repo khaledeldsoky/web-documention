@@ -37,5 +37,6 @@ Load these skills for detailed conventions:
 - Dark mode and light mode via CSS custom properties + `next-themes`
 - Full RTL support for Arabic (mirrored layout, correct font stack, bidi-safe code blocks)
 - Clean, readable code blocks with syntax highlighting
+- CodeBlock labels use bold teal (color: var(--accent2), font-weight: 700) to show where commands execute
 - Responsive sidebar navigation
 - Fast load times (static generation where possible)

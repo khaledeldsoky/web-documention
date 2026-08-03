@@ -64,4 +64,9 @@ The user types their own value into the VariablesTable input.
 
 - **Distinguishing Case 1 from Case 2:** `undefined` (Case 1) vs `""` (Case 2) in localStorage. The VariablesTable uses `vars[varName] || val` to show placeholder for both, but colors differ.
 - **VarReplace behavior:** Only clears when `value === ""`. When `value` is `undefined`, the initial `<VAR>` text from CodeBlock is preserved.
-- **CodeBlock auto-detection:** The `<VAR_NAME>` pattern in code blocks is automatically converted to `<span data-var="VAR_NAME">` elements by CodeBlock. VarReplace then manages their text content.
+- **CodeBlock auto-detection:** The `<VAR_NAME>` pattern in code blocks is automatically converted to `<span class="placeholder" data-var="VAR_NAME">` elements by CodeBlock. VarReplace then manages their text content.
+- **CodeBlock click-to-edit:** Clicking a `span[data-var]` in a CodeBlock swaps it to a styled `<input>` (`.cb-var-input` CSS class). Blur/Enter saves to the store, Escape cancels.
+- **VerifyBlock rule:** Never use `{'<VARIABLE_NAME>'}` literal strings in VerifyBlocks or prose. Always use `<Var course="..." name="..." />` for reactive display.
+- **InfoTable rule:** InfoTable cells accept strings rendered as HTML via `dangerouslySetInnerHTML`. To embed reactive vars, use `<span data-var="NAME">&lt;NAME&gt;</span>` in the string value. The `<Var>` React component cannot be used inside InfoTable string props.
+- **Custom hook:** Use `useVarStore(course)` from `@/lib/useVarStore` instead of manually calling `getStore`/`subscribe`/`loadFromStorage`.
+- **Per-course listeners:** `setVar` for one course only fires listeners for that course — Var instances for other courses are not affected.

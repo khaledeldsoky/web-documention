@@ -1,0 +1,10 @@
+export { Section0 } from "./00-variables";
+export { Section1 } from "./01-overview";
+export { Section2 } from "./02-phase-a-array";
+export { Section3 } from "./03-phase-b-packages";
+export { Section4 } from "./04-phase-b-network";
+export { Section5 } from "./05-phase-b-iscsi";
+export { Section6 } from "./06-phase-b-lvm";
+export { Section7 } from "./07-phase-b-io";
+export { Section8 } from "./08-phase-c-k8s";
+export { Section9 } from "./09-dr-checklist";

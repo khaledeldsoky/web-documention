@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 type NavItem = {
   id: string;
@@ -21,6 +21,8 @@ type Props = {
 };
 
 export default function MobileDrawer({ groups, open, onClose }: Props) {
+  const drawerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && open) onClose();
@@ -29,29 +31,50 @@ export default function MobileDrawer({ groups, open, onClose }: Props) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open, onClose]);
 
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+      const firstLink = drawerRef.current?.querySelector<HTMLElement>("a");
+      firstLink?.focus();
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   return (
     <div
+      ref={drawerRef}
       className={`topbar-drawer${open ? " open" : ""}`}
       id="topbar-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Navigation menu"
+      aria-hidden={!open}
     >
-      {groups.map((group, gi) => (
-        <div key={gi}>
-          <div className="nav-group">
-            <span className="gi">{group.icon}</span>
-            {group.label}
+      <nav aria-label="Mobile navigation">
+        {groups.map((group, gi) => (
+          <div key={gi}>
+            <div className="nav-group" role="heading" aria-level={3}>
+              <span className="gi" aria-hidden="true">{group.icon}</span>
+              {group.label}
+            </div>
+            <ul className="nav-list" role="list">
+              {group.items.map((item) => (
+                <li key={item.id}>
+                  <a
+                    className={`nav-item l${item.level || 1}`}
+                    href={`#${item.id}`}
+                    onClick={onClose}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
-          {group.items.map((item) => (
-            <a
-              key={item.id}
-              className={`nav-item l${item.level || 1}`}
-              href={`#${item.id}`}
-              onClick={onClose}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-      ))}
+        ))}
+      </nav>
     </div>
   );
 }

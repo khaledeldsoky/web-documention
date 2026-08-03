@@ -3,7 +3,7 @@ import { highlight } from "@/lib/shiki";
 import CopyButton from "./CopyButton";
 
 type Props = {
-  label?: string;
+  label?: ReactNode;
   children: ReactNode;
   variant?: "h1" | "h2" | "h3";
   lang?: string;

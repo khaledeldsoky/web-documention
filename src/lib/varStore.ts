@@ -2,7 +2,8 @@ export type VarMap = Record<string, string>;
 type Listener = () => void;
 
 const stores: Record<string, VarMap> = {};
-const listeners = new Set<Listener>();
+const listeners: Record<string, Set<Listener>> = {};
+const loaded = new Set<string>();
 
 export function getStore(course: string): VarMap {
   return stores[course] ?? {};
@@ -14,23 +15,26 @@ export function setVar(course: string, name: string, value: string) {
   try {
     localStorage.setItem(`${course}-vars`, JSON.stringify(stores[course]));
   } catch {}
-  listeners.forEach((fn) => fn());
+  (listeners[course] ?? new Set()).forEach((fn) => fn());
 }
 
 export function loadFromStorage(course: string) {
+  if (loaded.has(course)) return;
+  loaded.add(course);
   try {
     const raw = localStorage.getItem(`${course}-vars`);
     if (raw) {
       const parsed = JSON.parse(raw);
       if (typeof parsed === "object" && parsed !== null) {
         stores[course] = { ...stores[course], ...parsed };
-        listeners.forEach((fn) => fn());
+        (listeners[course] ?? new Set()).forEach((fn) => fn());
       }
     }
   } catch {}
 }
 
-export function subscribe(fn: Listener) {
-  listeners.add(fn);
-  return () => { listeners.delete(fn); };
+export function subscribe(course: string, fn: Listener) {
+  if (!listeners[course]) listeners[course] = new Set();
+  listeners[course].add(fn);
+  return () => { listeners[course]?.delete(fn); };
 }

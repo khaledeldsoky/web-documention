@@ -25,7 +25,7 @@ export default function Section({ id, num, title, children, numColor }: Props) {
   );
 }
 
-export function Subsection({ id, title, children }: { id?: string; title: string; children: ReactNode }) {
+export function Subsection({ id, title, children }: { id?: string; title: ReactNode; children: ReactNode }) {
   return (
     <div className="subsection" id={id}>
       <h3 className="sub-title">{title}</h3>

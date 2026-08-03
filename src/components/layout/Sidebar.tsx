@@ -67,8 +67,15 @@ export default function Sidebar({ groups, title, eyebrow, footer }: Props) {
             bestRatio = e.intersectionRatio;
           }
         });
-        navLinks.forEach((a) => a.classList.remove("active"));
-        if (best && navMap[best]) navMap[best].classList.add("active");
+        navLinks.forEach((a) => {
+          a.classList.remove("active");
+          a.removeAttribute("aria-current");
+        });
+        if (best && navMap[best]) {
+          navMap[best].classList.add("active");
+          navMap[best].setAttribute("aria-current", "location");
+          setActiveId(best);
+        }
       },
       { threshold: [0, 0.25, 0.5, 0.75, 1] }
     );
@@ -78,13 +85,20 @@ export default function Sidebar({ groups, title, eyebrow, footer }: Props) {
   }, []);
 
   return (
-    <aside className={`sidebar${collapsed ? " collapsed" : ""}`} id="sidebar">
+    <aside
+      className={`sidebar${collapsed ? " collapsed" : ""}`}
+      id="sidebar"
+      role="complementary"
+      aria-label="Course navigation"
+    >
       <div className="sidebar-head">
         <button
           className="sidebar-toggle"
           id="sidebar-toggle"
           onClick={toggleCollapse}
-          aria-label="Toggle sidebar"
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-expanded={!collapsed}
+          aria-controls="sidebar"
         >
           {collapsed ? "▶" : "◀"}
         </button>
@@ -93,14 +107,17 @@ export default function Sidebar({ groups, title, eyebrow, footer }: Props) {
         {(title || eyebrow) && (
           <div className="sidebar-logo">
             {eyebrow && <div className="eyebrow">{eyebrow}</div>}
-            {title && <h1>{title}</h1>}
+            {title && <h2>{title}</h2>}
           </div>
         )}
-        <nav>
+        <nav aria-label="Section navigation">
           {groups.map((group, gi) => (
             <div key={gi}>
               <div
                 className={`nav-group${expanded[gi] ? " open" : ""}`}
+                role="button"
+                tabIndex={0}
+                aria-expanded={expanded[gi]}
                 onClick={() =>
                   setExpanded((prev) => {
                     const next = [...prev];
@@ -108,20 +125,36 @@ export default function Sidebar({ groups, title, eyebrow, footer }: Props) {
                     return next;
                   })
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setExpanded((prev) => {
+                      const next = [...prev];
+                      next[gi] = !next[gi];
+                      return next;
+                    });
+                  }
+                }}
               >
-                <span className="gi">{group.icon}</span>
+                <span className="gi" aria-hidden="true">{group.icon}</span>
                 {group.label}
-                <span className="nav-chevron" />
+                <span className="nav-chevron" aria-hidden="true" />
               </div>
-              {expanded[gi] && group.items.map((item) => (
-                <a
-                  key={item.id}
-                  className={`nav-item l${item.level || 1}`}
-                  href={`#${item.id}`}
-                >
-                  {item.label}
-                </a>
-              ))}
+              {expanded[gi] && (
+                <ul className="nav-list" role="list">
+                  {group.items.map((item) => (
+                    <li key={item.id}>
+                      <a
+                        className={`nav-item l${item.level || 1}`}
+                        href={`#${item.id}`}
+                        aria-current={activeId === item.id ? "location" : undefined}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           ))}
         </nav>

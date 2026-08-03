@@ -2,183 +2,238 @@
 
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useTheme } from "next-themes";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Topbar from "@/components/layout/Topbar";
 
 const courses = [
-  "bash-basics",
-  "github-actions",
-  "k8s-airgap-baremetal",
-  "k8s-airgap-vsphere",
+  "k8s-airgap-ha",
   "linux-admin",
   "openshift-upi-v414",
+  "storage-iscsi-3lun",
+  "github-actions",
+  "bash-basics",
 ] as const;
+
+const categoryColors: Record<string, string> = {
+  "CI/CD": "var(--accent)",
+  Linux: "var(--accent-green)",
+  OpenShift: "var(--accent-red)",
+  Scripting: "var(--accent3)",
+  Kubernetes: "var(--accent2)",
+  Storage: "var(--accent3)",
+};
+
+const categoryIcons: Record<string, string> = {
+  "CI/CD": "⚡",
+  Linux: "🐧",
+  OpenShift: "红",
+  Scripting: ">_",
+  Kubernetes: "⎈",
+  Storage: "💾",
+};
 
 export default function LandingPage() {
   const t = useTranslations();
   const params = useParams();
   const locale = params.locale as string;
+  const { theme, setTheme } = useTheme();
   const [query, setQuery] = useState("");
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const coverT = t.raw("cover");
-  const titleHtml = coverT.title;
+  useEffect(() => setMounted(true), []);
+
+  const toggleLang = () => {
+    const path = window.location.pathname;
+    const target = locale === "ar" ? "/en" : "/ar";
+    window.location.href = path.replace(`/${locale}`, target);
+  };
+
+  const tags = Array.from(
+    new Set(courses.map((slug) => t.raw(`courses.${slug}`).tag))
+  );
 
   const filtered = courses.filter((slug) => {
-    if (!query.trim()) return true;
     const course = t.raw(`courses.${slug}`);
-    const text = `${course.title} ${course.desc} ${course.tag}`.toLowerCase();
-    return text.includes(query.toLowerCase());
+    const matchesQuery =
+      !query.trim() ||
+      `${course.title} ${course.desc} ${course.tag}`
+        .toLowerCase()
+        .includes(query.toLowerCase());
+    const matchesTag = !activeTag || course.tag === activeTag;
+    return matchesQuery && matchesTag;
   });
 
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
   return (
-    <>
-      <div className="cover" style={{ textAlign: "center", padding: "80px 24px 60px", maxWidth: 780, margin: "0 auto" }}>
-        <div className="breadcrumb" style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", color: "var(--accent2)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 14 }}>
-          Technical Guides
-        </div>
-        <h1 style={{ fontSize: "2.6rem", fontWeight: 700, lineHeight: 1.25, marginBottom: 12, color: "var(--text)" }}>
-          Complete <span className="hl" style={{ color: "var(--accent2)" }}>Technical</span> Guides
+    <div className="landing-page">
+      <Topbar title="A Piece of Science" />
+
+      <section className="landing-cover">
+        <span className="landing-eyebrow">A Piece of Science</span>
+        <h1 className="landing-title">
+          A <span className="landing-title-accent">Piece</span> of Science
         </h1>
-        <p className="sub" style={{ fontFamily: "var(--font-serif)", fontSize: "1.25rem", color: "var(--text-dim)", marginBottom: 28, lineHeight: 1.7 }}>
-          Practical, step-by-step guides — from CI/CD fundamentals to server administration
+        <p className="landing-sub">
+          Practical guides for the curious engineer
         </p>
-        <div className="search-wrap" style={{ maxWidth: 520, margin: "0 auto 40px" }}>
+
+        <div className="landing-search">
+          <span className="landing-search-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </span>
           <input
+            ref={searchRef}
             id="search-input"
-            type="text"
+            type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t("nav.search")}
-            style={{
-              width: "100%",
-              padding: "12px 18px",
-              background: "var(--surface)",
-              border: "1px solid var(--border)",
-              borderRadius: 8,
-              color: "var(--text)",
-              fontFamily: "var(--font-sans)",
-              fontSize: "0.95rem",
-              direction: locale === "ar" ? "rtl" : "ltr",
-              textAlign: locale === "ar" ? "right" : "left",
-              outline: "none",
-            }}
+            aria-label={t("nav.search")}
+            autoComplete="off"
+            className="landing-search-input"
           />
+          <kbd className="landing-search-kbd" aria-hidden="true">
+            ⌘K
+          </kbd>
+          {query && (
+            <button
+              className="landing-search-clear"
+              onClick={() => {
+                setQuery("");
+                searchRef.current?.focus();
+              }}
+              aria-label="Clear search"
+            >
+              ×
+            </button>
+          )}
         </div>
-      </div>
 
-      <div
-        className="course-grid"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-          gap: 18,
-          maxWidth: 960,
-          margin: "0 auto",
-          padding: "0 24px 60px",
-        }}
-      >
-        {filtered.map((slug) => {
-          const course = t.raw(`courses.${slug}`);
-          return (
-            <a
-              key={slug}
-              className="course-card"
-              href={`/${locale}/courses/${slug}`}
-              style={{
-                background: "var(--surface)",
-                border: "1px solid var(--border)",
-                borderRadius: 9,
-                padding: "22px 22px 20px",
-                textDecoration: "none",
-                display: "flex",
-                flexDirection: "column",
-                transition: "all 0.15s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "var(--accent)";
-                e.currentTarget.style.background = "var(--surface2)";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "var(--border)";
-                e.currentTarget.style.background = "var(--surface)";
-                e.currentTarget.style.transform = "none";
+        <div className="landing-tags" role="group" aria-label="Filter by category">
+          <button
+            className={`landing-tag${activeTag === null ? " active" : ""}`}
+            onClick={() => setActiveTag(null)}
+          >
+            All
+          </button>
+          {tags.map((tag) => (
+            <button
+              key={tag}
+              className={`landing-tag${activeTag === tag ? " active" : ""}`}
+              onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="landing-courses" aria-label="Available courses">
+        {filtered.length > 0 ? (
+          <div className="landing-grid">
+            {filtered.map((slug) => {
+              const course = t.raw(`courses.${slug}`);
+              const color = categoryColors[course.tag] || "var(--accent)";
+              const icon = categoryIcons[course.tag] || "📖";
+              return (
+                <a
+                  key={slug}
+                  className="course-card"
+                  href={`/${locale}/courses/${slug}`}
+                  style={{ "--card-accent": color } as React.CSSProperties}
+                >
+                  <div className="course-card-top">
+                    <span className="course-card-icon" aria-hidden="true">
+                      {icon}
+                    </span>
+                    <span className="course-card-tag">{course.tag}</span>
+                  </div>
+                  <h2 className="course-card-title">{course.title}</h2>
+                  <p className="course-card-desc">{course.desc}</p>
+                  <div className="course-card-meta">
+                    <span>{course.chapters}</span>
+                    <span className="course-card-dot" aria-hidden="true">·</span>
+                    <span>{course.level}</span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="landing-empty" role="status" aria-live="polite">
+            <span className="landing-empty-icon" aria-hidden="true">🔍</span>
+            <p className="landing-empty-text">
+              No courses match your search.
+            </p>
+            <button
+              className="landing-empty-reset"
+              onClick={() => {
+                setQuery("");
+                setActiveTag(null);
               }}
             >
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", color: "var(--accent2)", marginBottom: 8 }}>
-                {course.tag}
-              </div>
-              <div style={{ fontSize: "1.2rem", fontWeight: 600, color: "var(--text)", marginBottom: 6, lineHeight: 1.4 }}>
-                {course.title}
-              </div>
-              <div style={{ fontFamily: "var(--font-serif)", fontSize: "0.95rem", color: "var(--text-dim)", lineHeight: 1.6, marginBottom: 12, flex: 1 }}>
-                {course.desc}
-              </div>
-              <div style={{ fontSize: "0.8125rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", borderTop: "1px solid var(--border)", paddingTop: 10, display: "flex", gap: 14 }}>
-                <span>{course.chapters}</span>
-                <span>{course.level}</span>
-              </div>
-            </a>
-          );
-        })}
-      </div>
+              Clear filters
+            </button>
+          </div>
+        )}
+      </section>
 
-      <footer
-        className="site-footer"
-        style={{
-          textAlign: "center",
-          padding: "20px 24px 36px",
-          fontSize: "0.8125rem",
-          color: "var(--text-muted)",
-          borderTop: "1px solid var(--border)",
-          maxWidth: 960,
-          margin: "0 auto",
-        }}
-      >
-        <div style={{ display: "flex", gap: 8, justifyContent: "center", alignItems: "center" }}>
-          <button
-            className="theme-toggle"
-            onClick={() => {
-              const html = document.documentElement;
-              html.classList.toggle("light");
-              localStorage.setItem(
-                "claude-guide-theme",
-                html.classList.contains("light") ? "light" : "dark"
-              );
-            }}
-            style={{
-              background: "none",
-              border: "1px solid var(--border)",
-              borderRadius: 6,
-              padding: "6px 10px",
-              cursor: "pointer",
-              fontSize: 16,
-              color: "var(--text-dim)",
-            }}
-          >
-            🌙
-          </button>
-          <button
-            className="theme-toggle"
-            onClick={() => {
-              const path = window.location.pathname;
-              const target = locale === "ar" ? "/en" : "/ar";
-              window.location.href = path.replace(`/${locale}`, target);
-            }}
-            style={{
-              background: "none",
-              border: "1px solid var(--border)",
-              borderRadius: 6,
-              padding: "6px 10px",
-              cursor: "pointer",
-              fontSize: 16,
-              color: "var(--text-dim)",
-            }}
-          >
-            {locale === "ar" ? "English" : "العربية"}
-          </button>
+      <footer className="landing-footer" role="contentinfo">
+        <div className="landing-footer-inner">
+          <div className="landing-footer-brand">
+            <span className="landing-footer-logo">PS</span>
+            <span className="landing-footer-text">{t("nav.footer")}</span>
+          </div>
+          <div className="landing-footer-actions">
+            <button
+              className="theme-toggle"
+              aria-label={
+                mounted
+                  ? theme === "dark"
+                    ? "Switch to light mode"
+                    : "Switch to dark mode"
+                  : "Toggle theme"
+              }
+              onClick={() =>
+                setTheme(theme === "dark" ? "light" : "dark")
+              }
+            >
+              {mounted ? (theme === "dark" ? "☀️" : "🌙") : "🌙"}
+            </button>
+            <button
+              className="theme-toggle"
+              aria-label={
+                locale === "ar"
+                  ? "Switch to English"
+                  : "التبديل إلى العربية"
+              }
+              onClick={toggleLang}
+            >
+              {locale === "ar" ? "English" : "العربية"}
+            </button>
+          </div>
         </div>
-        <p style={{ marginTop: 10 }}>{t("nav.footer")}</p>
       </footer>
-    </>
+    </div>
   );
 }

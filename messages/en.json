@@ -4,7 +4,7 @@
     "courses": "Courses",
     "search": "Search courses...",
     "back": "Back",
-    "footer": "Technical Guides — Documentation Hub"
+    "footer": "A Piece of Science"
   },
   "topbar": {
     "language": "العربية",
@@ -12,15 +12,15 @@
     "back": "Back"
   },
   "cover": {
-    "title": "Complete <hl>Technical</hl> Guides",
-    "sub": "Practical, step-by-step guides — from CI/CD fundamentals to server administration"
+    "title": "A <hl>Piece</hl> of Science",
+    "sub": "Practical guides for the curious engineer"
   },
   "courses": {
-    "github-actions": {
-      "title": "GitHub Actions",
-      "desc": "Complete guide from scratch — Workflows, Jobs, Steps, Matrix, Needs, from setup to production deployment.",
-      "tag": "CI/CD",
-      "chapters": "11 chapters",
+    "k8s-airgap-ha": {
+      "title": "Kubernetes HA Air-Gapped Deployment",
+      "desc": "Deploy a 3+3 Kubernetes HA cluster on air-gapped infrastructure — registry, DNS, NTP, Flannel, MetalLB, NGINX Ingress. Fully isolated.",
+      "tag": "Kubernetes",
+      "chapters": "21 chapters",
       "level": "comprehensive"
     },
     "linux-admin": {
@@ -37,26 +37,26 @@
       "chapters": "12 chapters",
       "level": "comprehensive"
     },
+    "storage-iscsi-3lun": {
+      "title": "3-LUN iSCSI Storage Configuration",
+      "desc": "Configure a Dell EMC ME4024 array and three RHEL 9 nodes — iSCSI, MPIO, LVM, XFS, Kubernetes integration, and DR procedures.",
+      "tag": "Storage",
+      "chapters": "10 chapters",
+      "level": "comprehensive"
+    },
+    "github-actions": {
+      "title": "GitHub Actions Guide",
+      "desc": "From zero to CI/CD — workflows, YAML structure, matrix builds, reusable workflows, security, and interview questions.",
+      "tag": "CI/CD",
+      "chapters": "11 chapters",
+      "level": "beginner friendly"
+    },
     "bash-basics": {
       "title": "Bash Scripting Basics",
-      "desc": "Quick reference for the most common Bash scripting patterns — conditionals, loops, and functions.",
+      "desc": "A quick reference for the most common Bash patterns — conditionals, loops, and functions with copy-paste ready scripts.",
       "tag": "Scripting",
       "chapters": "11 chapters",
       "level": "beginner"
-    },
-    "k8s-airgap-baremetal": {
-      "title": "Kubernetes HA Air-Gapped — Baremetal",
-      "desc": "Deploy a 3+3 Kubernetes HA cluster on air-gapped baremetal — no internet, no DHCP, no existing DNS.",
-      "tag": "Kubernetes",
-      "chapters": "19 chapters",
-      "level": "comprehensive"
-    },
-    "k8s-airgap-vsphere": {
-      "title": "Kubernetes HA Air-Gapped — vSphere",
-      "desc": "Deploy a 3+3 Kubernetes HA cluster on air-gapped vSphere — govc VM cloning, kernel args, no internet.",
-      "tag": "Kubernetes",
-      "chapters": "20 chapters",
-      "level": "comprehensive"
     }
   }
 }

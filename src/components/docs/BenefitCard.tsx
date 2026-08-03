@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 type Card = {
   icon: string;
   title: string;
-  body: string;
+  body: ReactNode;
   danger?: boolean;
 };
 

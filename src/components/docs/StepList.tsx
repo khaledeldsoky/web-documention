@@ -1,6 +1,8 @@
+import type { ReactNode } from "react";
+
 type Step = {
-  title: string;
-  desc: string;
+  title: ReactNode;
+  desc: ReactNode;
 };
 
 type Props = {

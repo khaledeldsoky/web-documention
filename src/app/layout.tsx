@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Technical Guides — Documentation Hub",
+  title: "A Piece of Science",
   description: "Practical, step-by-step technical guides",
 };
 

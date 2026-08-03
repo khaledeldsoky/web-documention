@@ -17,10 +17,16 @@ This project has conventions encoded in SKILL.md files. Load the relevant one ba
 | Next.js 16 conventions, file structure, config | `/root/Docs/skills/docs-nextjs/SKILL.md` |
 | First-time setup or full build | `STARTER.md` |
 
-<!-- BEGIN:session-state -->
-# Session State
+## Air-Gap Rule
 
-Read `SESSION.md` first to understand what's been done, what's pending, and the project structure quickly.
-<!-- END:session-state -->
+Every `dnf install` (or `yum install`) package used on an air-gapped VM **must** be included in the offline bundle's "Download RPMs" section. Before writing `dnf install X` inside an air-gapped CodeBlock, add `X` to the `dnf download` list in the course's offline bundle section. This applies to the k8s-airgap-ha course.
+
+## Courses
+
+| Course | Sections | Description |
+|--------|----------|-------------|
+| `openshift-upi-v414` | 12 | OpenShift 4.14 UPI on vSphere |
+| `linux-admin` | 23 | Linux system administration |
+| `k8s-airgap-ha` | 24 | Kubernetes HA air-gapped deployment |
 
 <!-- END:docs-skills -->

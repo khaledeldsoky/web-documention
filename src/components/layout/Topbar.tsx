@@ -11,9 +11,10 @@ type Props = {
   onToggleDrawer?: () => void;
   title?: string;
   backHref?: string;
+  drawerOpen?: boolean;
 };
 
-export default function Topbar({ onToggleSidebar, onToggleDrawer, title, backHref }: Props) {
+export default function Topbar({ onToggleSidebar, onToggleDrawer, title, backHref, drawerOpen }: Props) {
   const t = useTranslations("topbar");
   const { theme, setTheme } = useTheme();
   const params = useParams();
@@ -29,34 +30,40 @@ export default function Topbar({ onToggleSidebar, onToggleDrawer, title, backHre
   };
 
   return (
-    <nav className="topbar">
+    <nav className="topbar" role="navigation" aria-label="Main navigation">
       <div className="topbar-inner">
         <div className="topbar-left">
-          <button
-            className="topbar-hamburger"
-            id="hamburger"
-            onClick={onToggleDrawer}
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
-          <a className="topbar-brand" href={`/${locale}`}>
-            {title || "Technical Guides"}
-          </a>
+          {onToggleDrawer && (
+            <button
+              className="topbar-hamburger"
+              id="hamburger"
+              onClick={onToggleDrawer}
+              aria-label="Toggle navigation"
+              aria-expanded={drawerOpen}
+              aria-controls="topbar-drawer"
+            >
+              ☰
+            </button>
+          )}
           {backHref && (
             <button
               className="topbar-back"
               onClick={() => window.history.back()}
+              aria-label={t("back") || "Go back"}
             >
-              {locale === "ar" ? "← " : "← "}{t("back") || "Back"}
+              ← {t("back") || "Back"}
             </button>
           )}
+          <a className="topbar-brand" href={`/${locale}`}>
+            {title || "A Piece of Science"}
+          </a>
         </div>
         <div className="topbar-right">
           <button
             id="lang-toggle"
             className="theme-toggle"
             onClick={toggleLang}
+            aria-label={locale === "ar" ? "Switch to English" : "التبديل إلى العربية"}
           >
             {locale === "ar" ? "English" : "العربية"}
           </button>
@@ -64,6 +71,7 @@ export default function Topbar({ onToggleSidebar, onToggleDrawer, title, backHre
             id="theme-toggle"
             className="theme-toggle"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            aria-label={mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Toggle theme"}
           >
             {mounted ? (theme === "dark" ? "🌙" : "☀️") : "🌙"}
           </button>
