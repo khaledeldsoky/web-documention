@@ -22,7 +22,7 @@ export function Section3() {
         <CodeBlock lang="bash" label="all nodes — install storage packages">
 {`# iSCSI initiator, multipath, LVM, XFS tools, SCSI utilities
 dnf install -y \\
-    open-iscsi \\
+    iscsi-initiator-utils \\
     device-mapper-multipath \\
     lvm2 \\
     xfsprogs \\

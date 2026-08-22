@@ -25,9 +25,12 @@ export function Section8() {
       <Subsection title="Pull kube-vip Image">
         <NodeTag label="MASTER 1 ONLY" variant="h1" />
         <CodeBlock lang="bash" label="master1 — pull kube-vip image" variant="h1">
-{`source /tmp/image-versions.txt
+{`VIP="<VIP>"
+INTERFACE="<INTERFACE_NAME>"
 
-nerdctl pull ghcr.io/kube-vip/kube-vip:\${KUBEVIP_VERSION}`}
+KVVERSION=$(curl -sL https://api.github.com/repos/kube-vip/kube-vip/releases | jq -r ".[0].name")
+
+alias kube-vip="ctr image pull ghcr.io/kube-vip/kube-vip:$KVVERSION; ctr run --rm --net-host ghcr.io/kube-vip/kube-vip:$KVVERSION vip /kube-vip"`}
         </CodeBlock>
       </Subsection>
 
@@ -39,8 +42,8 @@ nerdctl pull ghcr.io/kube-vip/kube-vip:\${KUBEVIP_VERSION}`}
 nerdctl run --rm --net-host \\
   ghcr.io/kube-vip/kube-vip:\${KUBEVIP_VERSION} vip \\
   /kube-vip manifest pod \\
-    --interface <NIC> \\
-    --address <VIP> \\
+    --interface $INTERFACE \\
+    --address $VIP \\
     --controlplane \\
     --arp \\
     --leaderElection \\

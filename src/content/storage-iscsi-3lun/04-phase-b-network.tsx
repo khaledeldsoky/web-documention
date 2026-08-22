@@ -37,25 +37,13 @@ export function Section4() {
 # Look for the interface on the storage VLAN — note its name`}
         </CodeBlock>
 
-        <CodeBlock lang="bash" label="all nodes — configure via systemd-networkd (edit IP per node)">
+        <CodeBlock lang="bash" label="each heavy — configure via systemd-networkd (edit IP per node)">
 {`# Replace <STORAGE_NIC> with your NIC name
 # <NODE_1>: Address=<NODE_1_IP>/24
 # <NODE_2>: Address=<NODE_2_IP>/24
 # <NODE_3>: Address=<NODE_3_IP>/24
 
-cat > /etc/systemd/network/20-storage.network <<'EOF'
-[Match]
-Name=<STORAGE_NIC>
-
-[Link]
-MTUBytes=9000
-
-[Network]
-Address=<NODE_1_IP>/24
-# NO Gateway line — iSCSI traffic must never leave this VLAN
-EOF
-
-networkctl reload
+nmcli connection modify <STORAGE_NIC>  802-3-ethernet.mtu <MTU>
 
 # Verify MTU applied correctly
 ip link show <STORAGE_NIC>`}
@@ -133,7 +121,7 @@ node.session.err_timeo.lu_reset_timeout     = 20
 # Queue depth and burst — tuned for 10K HDD workload
 node.session.cmds_max                       = 1024
 node.session.queue_depth                    = 128
-node.session.iscsi.MaxBurstLength           = 16776192
+node.session.iscsi.MaxBurstLength           = 524288
 node.session.iscsi.FirstBurstLength         = 262144
 node.session.iscsi.MaxRecvDataSegmentLength = 262144
 

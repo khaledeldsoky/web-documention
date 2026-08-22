@@ -17,19 +17,56 @@ export function Section9() {
       <Subsection title="Create kubeadm Config">
         <NodeTag label="MASTER 1 ONLY" variant="h1" />
         <CodeBlock lang="bash" label="master1 — create kubeadm config" variant="h1">
-{`source /tmp/image-versions.txt
-
+{`
 cat > /root/kubeadm-config.yaml <<EOF
 apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: <IP_INIT_MASTER>
+  bindPort: 6443
+nodeRegistration:
+  criSocket: unix:///var/run/containerd/containerd.sock
+  name: <IQN_INIT_MASTER>
+  kubeletExtraArgs:
+    node-ip: "<IP_INIT_MASTER>"
+---
+apiVersion: kubeadm.k8s.io/v1beta4
 kind: ClusterConfiguration
-kubernetesVersion: \${K8S_VERSION}
-controlPlaneEndpoint: "<VIP>:6443"
+kubernetesVersion: <K8S_VERSION>
+controlPlaneEndpoint: <VIP>:6443
 networking:
   podSubnet: "<POD_CIDR>"
 apiServer:
   certSANs:
-  - "<VIP>"
+  - <MASTER_0_IP>
+  - <MASTER_1_IP>
+  - <MASTER_2_IP>
+  - <VIP>
+  - 127.0.0.1
+  - localhost
   - "k8s-api.<DOMAIN>"
+etcd:
+  local:
+    serverCertSANs:
+    - <MASTER_0_IP>
+    - <MASTER_1_IP>
+    - <MASTER_2_IP>
+    - <VIP>
+    - 127.0.0.1
+    - localhost
+    - <IQN_MASTER_0>
+    - <IQN_MASTER_1>
+    - <IQN_MASTER_2>
+    peerCertSANs:
+    - <MASTER_0_IP>
+    - <MASTER_1_IP>
+    - <MASTER_2_IP>
+    - <VIP>
+    - 127.0.0.1
+    - localhost
+    - <IQN_MASTER_0>
+    - <IQN_MASTER_1>
+    - <IQN_MASTER_2>
 EOF`}
         </CodeBlock>
       </Subsection>
