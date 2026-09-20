@@ -6,9 +6,9 @@ import VerifyBlock from "@/components/docs/VerifyBlock";
 import NodeTag from "@/components/docs/NodeTag";
 import Var from "@/components/docs/Var";
 
-export function Section14() {
+export function Section13() {
   return (
-    <Section id="nginx-ingress" num={14} title="Install NGINX Ingress">
+    <Section id="nginx-ingress" num={13} title="Install NGINX Ingress">
       <Prose>
         The Ingress controller routes HTTP/HTTPS traffic to backend Services. Deployed as
         a DaemonSet with <code>hostNetwork: true</code> to bind directly to port 80/443.

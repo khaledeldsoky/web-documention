@@ -4,9 +4,9 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import VerifyBlock from "@/components/docs/VerifyBlock";
 import NodeTag from "@/components/docs/NodeTag";
 
-export function Section10() {
+export function Section11() {
   return (
-    <Section id="flannel-cni" num={10} title="Install Flannel CNI">
+    <Section id="flannel-cni" num={11} title="Install Flannel CNI">
       <Prose>
         Flannel creates a flat overlay network using VXLAN tunnels between nodes. All
         pod traffic is encapsulated and routed through these tunnels.
@@ -15,7 +15,7 @@ export function Section10() {
       <Subsection title="Download Flannel Manifest">
         <NodeTag label="MASTER 1 ONLY" variant="h1" />
         <CodeBlock lang="bash" label="master1 — download flannel manifest" variant="h1">
-{`curl -fsSL https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml \\
+{`curl -fsSL https://github.com/flannel-io/flannel/releases/download/<FLANNEL_VERSION>/kube-flannel.yml \\
   -o /root/kube-flannel.yml`}
         </CodeBlock>
       </Subsection>

@@ -69,10 +69,14 @@ ip addr show ens32`}
       </Subsection>
 
       <Subsection title="Install & Configure HAProxy">
-        <Prose>Open the HAProxy config file with <code>vim /etc/haproxy/haproxy.cfg</code> and replace its content.</Prose>
+        <Prose>Create the HAProxy config file:</Prose>
         <Collapsible title="/etc/haproxy/haproxy.cfg">
-        <CodeBlock lang="ini" label="nfs-haproxy — /etc/haproxy/haproxy.cfg">
-{`global
+        <CodeBlock lang="bash" label="nfs-haproxy — create /etc/haproxy/haproxy.cfg">
+{`# The config dir comes with the haproxy package — make sure it exists
+sudo mkdir -p /etc/haproxy
+
+sudo tee /etc/haproxy/haproxy.cfg > /dev/null <<EOF
+global
     log /dev/log local0
     chroot /var/lib/haproxy
     # pidfile /var/run/haproxy.pid
@@ -121,7 +125,8 @@ frontend openshift-ingress
 backend openshift-ingress
     balance source
     server worker-0 <WORKER_0_IP>:443 check
-    server worker-1 <WORKER_1_IP>:443 check`}
+    server worker-1 <WORKER_1_IP>:443 check
+EOF`}
         </CodeBlock>
         </Collapsible>
 

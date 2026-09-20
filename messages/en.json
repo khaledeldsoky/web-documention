@@ -18,7 +18,7 @@
   "courses": {
     "k8s-airgap-ha": {
       "title": "Kubernetes HA Air-Gapped Deployment",
-      "desc": "Deploy a 3+3 Kubernetes HA cluster on air-gapped infrastructure — registry, DNS, NTP, Flannel, MetalLB, NGINX Ingress. Fully isolated.",
+      "desc": "Deploy a 3+3 Kubernetes HA cluster on air-gapped infrastructure — Nexus 3 registry, DNS, NTP, Flannel, MetalLB, NGINX Ingress. Fully isolated.",
       "tag": "Kubernetes",
       "chapters": "21 chapters",
       "level": "comprehensive"

@@ -13,14 +13,10 @@ export function Section9() {
       <Subsection title="Configure Image Registry (NFS-backed)">
         <Prose>Create a PersistentVolume and PersistentVolumeClaim backed by the NFS export, then point the image registry at the PVC. The <code>oc patch</code> <code>spec.storage.nfs</code> path is not valid in OCP 4.14+ — use a PVC claim instead.</Prose>
 
-        <CodeBlock lang="bash" label="WSL">
-{`# Create the registry-nfs.yaml
-vim registry-nfs.yaml`}
-        </CodeBlock>
-
         <Collapsible title="registry-nfs.yaml">
-        <CodeBlock lang="yaml" label="WSL — registry-nfs.yaml">
-{`apiVersion: v1
+        <CodeBlock lang="bash" label="WSL — create registry-nfs.yaml">
+{`cat > registry-nfs.yaml <<EOF
+apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: registry-nfs-pv
@@ -46,7 +42,8 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 100Gi`}
+      storage: 100Gi
+EOF`}
         </CodeBlock>
         </Collapsible>
 

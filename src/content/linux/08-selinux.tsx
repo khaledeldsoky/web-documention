@@ -56,9 +56,9 @@ sestatus
 setenforce 0    # Permissive
 setenforce 1    # Enforcing
 
-# Permanent change — edit /etc/selinux/config
-vim /etc/selinux/config
-# SELINUX=enforcing / permissive / disabled`}
+# Permanent change — set SELINUX= in /etc/selinux/config
+sed -i 's/^SELINUX=.*/SELINUX=permissive/' /etc/selinux/config
+# enforcing / permissive / disabled`}
         </CodeBlock>
 
         <Callout variant="danger">

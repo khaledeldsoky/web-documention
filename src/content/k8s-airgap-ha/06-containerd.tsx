@@ -59,8 +59,10 @@ grep 'SystemdCgroup' /etc/containerd/config.toml`}
   | grep '"tag_name"' | cut -d'"' -f4)
 
 cd /tmp
-wget https://github.com/containerd/nerdctl/releases/download/\${NERDCTL_VERSION}/nerdctl-\${NERDCTL_VERSION}-linux-amd64.tar.gz
-tar xzf nerdctl-\${NERDCTL_VERSION}-linux-amd64.tar.gz -C /usr/local/bin/
+
+wget https://github.com/containerd/nerdctl/releases/download/\${NERDCTL_VERSION}/nerdctl-full-\${VERSION_NUMBER}-linux-amd64.tar.gz
+
+tar Cxzvf /usr/local nerdctl-\${NERDCTL_VERSION}-linux-amd64.tar.gz
 
 nerdctl version`}
         </CodeBlock>

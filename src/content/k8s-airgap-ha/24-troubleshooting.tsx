@@ -2,17 +2,23 @@ import Section, { Subsection } from "@/components/docs/Section";
 import Prose from "@/components/docs/Prose";
 import CodeBlock from "@/components/docs/CodeBlock";
 
-export function Section23() {
+export function Section24() {
   return (
-    <Section id="troubleshooting" num={23} title="Troubleshooting">
+    <Section id="troubleshooting" num={24} title="Troubleshooting">
       <Prose>
         Common issues and fixes for air-gapped deployments.
       </Prose>
 
       <Subsection title="nerdctl pull fails — image not found">
-        <CodeBlock lang="bash" label="check registry container">
-{`# Confirm the registry container is running
-nerdctl ps | grep registry`}
+        <CodeBlock lang="bash" label="check Nexus and its status endpoint">
+{`# Confirm the Nexus pod is running
+kubectl -n nexus get pods
+
+# Nexus status endpoint should answer
+curl -I http://nexus.apps.<DOMAIN>/service/rest/v1/status
+
+# Recent Nexus logs if the pod is crash-looping
+kubectl -n nexus logs deploy/nexus3 --tail=50`}
         </CodeBlock>
       </Subsection>
 

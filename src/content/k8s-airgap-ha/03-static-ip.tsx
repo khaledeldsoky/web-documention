@@ -36,6 +36,12 @@ hostnamectl`}
           must match the role.
         </Callout>
 
+        <Callout variant="info">
+          Configure the <strong>management NIC only</strong> — leave its gateway and
+          DNS empty. Temporary internet comes from a second adapter via DHCP in the
+          next section; leave every other adapter untouched.
+        </Callout>
+
         <VerifyBlock label="Verify on each node">
           <p>
             <code>ip a</code> shows the correct static IP.<br />

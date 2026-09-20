@@ -5,13 +5,15 @@ import Callout from "@/components/docs/Callout";
 import VerifyBlock from "@/components/docs/VerifyBlock";
 import NodeTag from "@/components/docs/NodeTag";
 
-export function Section9() {
+export function Section10() {
   return (
-    <Section id="init-cluster" num={9} title="Initialize Cluster">
+    <Section id="init-cluster" num={10} title="Initialize Cluster">
       <Prose>
         <code>kubeadm init</code> creates the etcd database, generates all TLS
         certificates, writes the API server configuration, and prints the join commands
-        for other nodes.
+        for other nodes. The cluster starts as a <strong>single control plane</strong>{" "}
+        — masters 2 &amp; 3 join in Section 19 and the workers in Section 20, after
+        every air-gap service is verified on master1.
       </Prose>
 
       <Subsection title="Create kubeadm Config">
@@ -28,7 +30,8 @@ nodeRegistration:
   criSocket: unix:///var/run/containerd/containerd.sock
   name: <IQN_INIT_MASTER>
   kubeletExtraArgs:
-    node-ip: "<IP_INIT_MASTER>"
+    - name: node-ip
+      value: "<IP_INIT_MASTER>"
 ---
 apiVersion: kubeadm.k8s.io/v1beta4
 kind: ClusterConfiguration

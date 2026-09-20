@@ -5,12 +5,12 @@ import Callout from "@/components/docs/Callout";
 import VerifyBlock from "@/components/docs/VerifyBlock";
 import NodeTag from "@/components/docs/NodeTag";
 
-export function Section12() {
+export function Section20() {
   return (
-    <Section id="join-workers" num={12} title="Join Workers">
+    <Section id="join-workers" num={20} title="Join Workers">
       <Prose>
-        Join all worker nodes using the worker join command from{" "}
-        <code>kubeadm init</code> output. No <code>--control-plane</code> flag.
+        Join all worker nodes using the credentials minted in Section 19. No{" "}
+        <code>--control-plane</code> flag.
       </Prose>
 
       <Subsection title="Join Each Worker">
@@ -22,8 +22,9 @@ export function Section12() {
         </CodeBlock>
 
         <Callout variant="info">
-          <strong>If tokens are expired</strong> (24h), regenerate from master1:{" "}
-          <code>kubeadm token create --print-join-command</code>
+          Workers pull kube-proxy, flannel, MetalLB speaker and ingress-nginx images
+          from Nexus via the mirror configured in Section 18. If a token was rotated
+          since, re-run the Section 19 credential block on master1 first.
         </Callout>
       </Subsection>
 

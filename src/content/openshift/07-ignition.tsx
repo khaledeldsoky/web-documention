@@ -12,14 +12,10 @@ export function Section7() {
       <Prose>All commands on <strong>WSL</strong>.</Prose>
 
       <Subsection title="Create install-config.yaml">
-        <CodeBlock lang="bash" label="WSL">
-{`# Create the install-config.yaml
-vim $OCP4_DIR/config/install-config.yaml`}
-        </CodeBlock>
-
         <Collapsible title="$OCP4_DIR/config/install-config.yaml">
-        <CodeBlock lang="yaml" label="WSL — $OCP4_DIR/config/install-config.yaml">
-{`apiVersion: v1
+        <CodeBlock lang="bash" label="WSL — create $OCP4_DIR/config/install-config.yaml">
+{`cat > $OCP4_DIR/config/install-config.yaml <<EOF
+apiVersion: v1
 baseDomain: <BASE_DOMAIN>
 metadata:
   name: <CLUSTER_NAME>
@@ -60,7 +56,8 @@ controlPlane:
   name: master
   replicas: 3
 pullSecret: '<PULL_SECRET>'
-sshKey: '<SSH_PUBLIC_KEY>'`}
+sshKey: '<SSH_PUBLIC_KEY>'
+EOF`}
         </CodeBlock>
         </Collapsible>
 
@@ -93,14 +90,10 @@ ls $OCP4_DIR/config/*.ign`}
           This requires <code>pyVmomi</code> — install via <code>pip install pyVmomi</code>.
         </Callout>
 
-        <CodeBlock lang="bash" label="WSL">
-{`# Create the pyVmomi ignition injection script
-vim $OCP4_DIR/config/inject-ignition.py`}
-        </CodeBlock>
-
         <Collapsible title="$OCP4_DIR/config/inject-ignition.py">
-        <CodeBlock lang="python" label="WSL — $OCP4_DIR/config/inject-ignition.py">
-{`import base64, ssl
+        <CodeBlock lang="bash" label="WSL — create $OCP4_DIR/config/inject-ignition.py">
+{`cat > $OCP4_DIR/config/inject-ignition.py <<EOF
+import base64, ssl
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim
 
@@ -145,7 +138,8 @@ for vm_name, ign_path in vms.items():
     while task.info.state == vim.TaskInfo.State.running:
         pass
     print(f'{vm_name}: {task.info.state}')
-Disconnect(si)`}
+Disconnect(si)
+EOF`}
         </CodeBlock>
         </Collapsible>
 

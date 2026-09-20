@@ -163,9 +163,8 @@ include /etc/logrotate.d`}
 mkdir -p /var/log/journal
 systemd-tmpfiles --create --prefix /var/log/journal
 
-# Or edit /etc/systemd/journald.conf
-vim /etc/systemd/journald.conf
-# Storage=persistent
+# Or enable persistent storage in /etc/systemd/journald.conf
+sed -i 's/^#\?Storage=.*/Storage=persistent/' /etc/systemd/journald.conf
 
 # Restart journald
 systemctl restart systemd-journald

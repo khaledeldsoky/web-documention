@@ -11,16 +11,26 @@ export function Section1() {
         This guide builds a production-grade, fully air-gapped Kubernetes cluster on
         RHEL 9 using <strong>nerdctl</strong> (not Docker) to manage containers. All
         image versions are discovered from official sources first, then exact versions
-        are used throughout. The cluster is installed with internet (via laptop ICS),
-        tested, then air-gap services are retrofitted and internet is removed.
+        are used throughout. All six machines take their packages upfront while they
+        briefly share a temporary DHCP network — afterwards{" "}
+        <strong>only master1 keeps an internet uplink</strong>. The cluster bootstraps
+        on master1 alone: Nexus, MetalLB, Ingress, DNS, NTP and the containerd mirrors
+        are installed and verified there first, the remaining five nodes are prepared
+        offline and joined <strong>last</strong>, and finally master1&apos;s cable is
+        pulled.
       </Prose>
 
       <Subsection id="topology" title="Cluster Topology">
         <Prose>
           <strong>3 control-plane nodes + 3 worker nodes</strong> (6 physical machines).
           master1 doubles as the infra node: it runs DNS (dnsmasq), NTP (chrony), a
-          local yum repo (httpd), and a local container registry (Docker Registry v2 +
-          nerdctl).
+          local yum repo (httpd), and hosts the container registry — Sonatype Nexus 3
+          running in-cluster, serving both the cluster and future air-gapped
+          workloads. It is also the only node with internet during installation. Each
+          machine needs <strong>two network connections</strong>: one
+          adapter with the static cluster IP, and a second adapter for temporary DHCP
+          internet — used by all nodes in Sections 0–7, then kept connected on{" "}
+          <strong>master1 only</strong> until Section 22.
         </Prose>
 
         <Callout variant="info">
@@ -120,10 +130,10 @@ export function Section1() {
           ]}
           rows={[
             { resource: "CPU", cp: "4 vCPU minimum", wk: "4 vCPU minimum" },
-            { resource: "RAM", cp: "8 GB minimum", wk: "8 GB minimum" },
+            { resource: "RAM", cp: "8 GB minimum (16 GB recommended for master1 — it runs Nexus)", wk: "8 GB minimum" },
             { resource: "Disk (OS)", cp: "50 GB", wk: "50 GB" },
             { resource: "OS", cp: "RHEL 9 — fully patched", wk: "RHEL 9 — fully patched" },
-            { resource: "Network", cp: "Full L2 between all nodes", wk: "Full L2 between all nodes" },
+            { resource: "Network", cp: "Full L2 between all nodes + temp DHCP uplink for install", wk: "Full L2 between all nodes + temp DHCP uplink for install" },
             { resource: "Swap", cp: "Must be disabled", wk: "Must be disabled" },
           ]}
         />

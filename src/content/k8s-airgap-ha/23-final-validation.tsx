@@ -6,9 +6,9 @@ import VerifyBlock from "@/components/docs/VerifyBlock";
 import NodeTag from "@/components/docs/NodeTag";
 import Var from "@/components/docs/Var";
 
-export function Section22() {
+export function Section23() {
   return (
-    <Section id="final-validation" num={22} title="Final Air-Gap Validation">
+    <Section id="final-validation" num={23} title="Final Air-Gap Validation">
       <Prose>
         Validate everything works without internet: DNS, NTP, image pull via mirror,
         and cluster health.
@@ -33,8 +33,8 @@ timedatectl status                # confirm sync`}
       <Subsection title="Test Image Pull via Mirror (no internet)">
         <NodeTag label="ALL NON-MASTER1 NODES" variant="h2" />
         <CodeBlock lang="bash" label="each non-master1 node — pull image via mirror without internet" variant="h2">
-{`nerdctl rmi registry.k8s.io/coredns/coredns:\${COREDNS_VERSION}   # clear cache
-nerdctl pull registry.k8s.io/coredns/coredns:\${COREDNS_VERSION}  # should succeed via mirror`}
+{`nerdctl rmi registry.k8s.io/coredns/coredns:<COREDNS_VERSION>   # clear cache
+nerdctl pull registry.k8s.io/coredns/coredns:<COREDNS_VERSION>  # should succeed via mirror`}
         </CodeBlock>
       </Subsection>
 
@@ -43,6 +43,7 @@ nerdctl pull registry.k8s.io/coredns/coredns:\${COREDNS_VERSION}  # should succe
         <CodeBlock lang="bash" label="master1 — final cluster health" variant="h1">
 {`kubectl get nodes -o wide              # all 6 Ready
 kubectl get pods -A                    # all Running
+kubectl -n nexus get pods              # Nexus Running
 curl -I http://<INGRESS_IP>             # NGINX responds`}
         </CodeBlock>
 

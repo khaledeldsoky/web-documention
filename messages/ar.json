@@ -18,7 +18,7 @@
   "courses": {
     "k8s-airgap-ha": {
       "title": "نشر كوبيرونيتس HA بدون إنترنت",
-      "desc": "نشر كلاستر كوبيرونيتس HA مكون من 3+3 عقد على بنية معزولة — registry, DNS, NTP, Flannel, MetalLB, NGINX Ingress. عزل تام.",
+      "desc": "نشر كلاستر كوبيرونيتس HA مكون من 3+3 عقد على بنية معزولة — Nexus 3 registry, DNS, NTP, Flannel, MetalLB, NGINX Ingress. عزل تام.",
       "tag": "Kubernetes",
       "chapters": "21 فصل",
       "level": "شامل"

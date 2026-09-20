@@ -34,8 +34,6 @@ export function Section0() {
           { cat: "Network", var: "MGMT_CIDR", val: "<MGMT_CIDR>", cmd: "10.10.10.0/24" },
           { cat: "Network", var: "DOMAIN", val: "<DOMAIN>", cmd: "cluster.local" },
           { cat: "Network", var: "POD_CIDR", val: "<POD_CIDR>", cmd: "10.244.0.0/16 (Flannel)" },
-          { cat: "ICS / Laptop", var: "LAPTOP_ICS_IP", val: "<LAPTOP_ICS_IP>", cmd: "192.168.137.1 (Windows ICS)" },
-          { cat: "ICS / Laptop", var: "NODE_ICS_IP", val: "<NODE_ICS_IP>", cmd: "192.168.137.11 (.11-.16 per node)" },
           { cat: "Versions", var: "K8S_VERSION", val: "<K8S_VERSION>", cmd: "v1.35.0" },
           { cat: "Versions", var: "KUBEVIP_VERSION", val: "<KUBEVIP_VERSION>", cmd: "v0.8.9" },
           { cat: "Versions", var: "FLANNEL_VERSION", val: "<FLANNEL_VERSION>", cmd: "v0.26.1" },
@@ -43,14 +41,13 @@ export function Section0() {
           { cat: "Versions", var: "METALLB_VERSION", val: "<METALLB_VERSION>", cmd: "v0.15.3" },
           { cat: "Versions", var: "INGRESS_NGINX_VERSION", val: "<INGRESS_NGINX_VERSION>", cmd: "v1.12.0" },
           { cat: "Versions", var: "INGRESS_WEBHOOK_CERTGEN_VERSION", val: "<INGRESS_WEBHOOK_CERTGEN_VERSION>", cmd: "v1.5.1" },
-          { cat: "Versions", var: "REGISTRY_VERSION", val: "<REGISTRY_VERSION>", cmd: "2" },
+          { cat: "Versions", var: "NEXUS_VERSION", val: "<NEXUS_VERSION>", cmd: "3.95.2" },
           { cat: "Versions", var: "PAUSE_VERSION", val: "<PAUSE_VERSION>", cmd: "3.10" },
           { cat: "Versions", var: "ETCD_VERSION", val: "<ETCD_VERSION>", cmd: "3.5.16-0" },
           { cat: "Versions", var: "COREDNS_VERSION", val: "<COREDNS_VERSION>", cmd: "v1.11.3" },
           { cat: "K8s Runtime", var: "TOKEN", val: "<TOKEN>", cmd: "kubeadm token (from init output)" },
           { cat: "K8s Runtime", var: "HASH", val: "<HASH>", cmd: "sha256:... (discovery-token-ca-cert-hash)" },
           { cat: "K8s Runtime", var: "CERT_KEY", val: "<CERT_KEY>", cmd: "certificate key for control-plane join" },
-          { cat: "Infra", var: "REGISTRY_PORT", val: "<REGISTRY_PORT>", cmd: "5000" },
         ]}
       />
     </Section>

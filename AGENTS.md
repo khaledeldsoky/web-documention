@@ -21,6 +21,14 @@ This project has conventions encoded in SKILL.md files. Load the relevant one ba
 
 Every `dnf install` (or `yum install`) package used on an air-gapped VM **must** be included in the offline bundle's "Download RPMs" section. Before writing `dnf install X` inside an air-gapped CodeBlock, add `X` to the `dnf download` list in the course's offline bundle section. This applies to the k8s-airgap-ha course.
 
+## File Editing Rule
+
+In course CodeBlocks, never use interactive editors (vim, vi, nano):
+
+- **New file** → create it with a heredoc: `cat > /path/file <<EOF ... EOF` (unquoted delimiter so `$VARS` expand).
+- **Existing file** → change it with `sed -i` (or a targeted append like `echo ... | tee -a`).
+- If the write needs root and the shell is not root, pipe through tee: `sudo tee /path/file >/dev/null <<EOF`.
+
 ## Courses
 
 | Course | Sections | Description |

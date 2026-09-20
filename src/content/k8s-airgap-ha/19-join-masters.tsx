@@ -1,16 +1,41 @@
 import Section, { Subsection } from "@/components/docs/Section";
 import Prose from "@/components/docs/Prose";
 import CodeBlock from "@/components/docs/CodeBlock";
+import Callout from "@/components/docs/Callout";
 import VerifyBlock from "@/components/docs/VerifyBlock";
 import NodeTag from "@/components/docs/NodeTag";
 
-export function Section11() {
+export function Section19() {
   return (
-    <Section id="join-masters" num={11} title="Join Masters 2 &amp; 3">
+    <Section id="join-masters" num={19} title="Join Masters 2 &amp; 3">
       <Prose>
-        Before running the join command, you must place the kube-vip manifest on each
-        master. Then run the control-plane join command from kubeadm init output.
+        Masters 2 and 3 are prepped (Section 18) and offline. Before they can join,
+        mint <strong>fresh join credentials</strong> — the init token lives 24 hours
+        and the certificate key from <code>--upload-certs</code> only 2, both long
+        expired by now. Then place the kube-vip manifest on each master and run the
+        control-plane join.
       </Prose>
+
+      <Subsection title="Regenerate Join Credentials">
+        <NodeTag label="MASTER 1 ONLY" variant="h1" />
+        <CodeBlock lang="bash" label="master1 — mint a new token, hash, and certificate key" variant="h1">
+{`TOKEN=\$(kubeadm token create)
+
+HASH=\$(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt \\
+  | openssl pkey -pubin -outform DER \\
+  | openssl sha256 | awk '{print \$2}')
+
+CERT_KEY=\$(kubeadm init phase upload-certs --upload-certs | tail -1)
+
+echo "token: \$TOKEN"
+echo "hash:  sha256:\$HASH"
+echo "cert:  \$CERT_KEY"
+# token:<TOKEN>
+# hash:<HASH>
+# cert:<CERT_KEY>
+`}
+        </CodeBlock>
+      </Subsection>
 
       <Subsection title="Copy kube-vip Manifest">
         <NodeTag label="MASTER 1 ONLY" variant="h1" />
@@ -49,6 +74,13 @@ mkdir -p /root/.kube
 cp /etc/kubernetes/admin.conf /root/.kube/config
 chmod 600 /root/.kube/config`}
         </CodeBlock>
+
+        <Callout variant="info">
+          Every image the joining masters need (etcd, API server, controller manager,
+          scheduler, kube-proxy) comes <strong>from Nexus</strong> through the mirror
+          configured in Section 18. If pods stick in{" "}
+          <code>ImagePullBackOff</code>, check that node&apos;s certs.d files and DNS.
+        </Callout>
       </Subsection>
 
       <Subsection title="Verify All Masters">

@@ -142,11 +142,10 @@ ls -ld /bin /sbin
 
         <CodeBlock lang="bash" label="Add a Python Script as a Command">
 {`# Create a script file
-sudo vi /usr/local/bin/hello
-
-# Content:
+sudo tee /usr/local/bin/hello > /dev/null <<EOF
 #!/usr/bin/env python3
 print("Hello from Python")
+EOF
 
 # Execute permission
 sudo chmod +x /usr/local/bin/hello
